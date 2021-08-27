@@ -1,10 +1,13 @@
-name: Workflow using Snyk
+name: Security check with snyk
 on: push
 jobs:
   security:
     runs-on: ubuntu-latest
     environment:
       name: snyk
+    defaults:
+      run:
+        working-directory: app
     steps:
       - uses: actions/checkout@master
       - name: Run Snyk to check for vulnerabilities
