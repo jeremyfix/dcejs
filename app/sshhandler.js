@@ -443,7 +443,6 @@ function find_free_port_rec(start_port, max_port, resolve, reject) {
 		})
 		.on('error', err => {
 			console.log(`Port ${start_port} free`);
-			s.end();
 			resolve(start_port);
 		});
 }
