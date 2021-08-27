@@ -4,6 +4,8 @@
 
 Electron app to connect to the Data Center Enseignement clusters of CentraleSupélec - Metz
 
+This app allows to get connected to either the GPU or CPU clusters and then to execute programs on it such as VNC (with port_forwarding). 
+
 ## Installing
 
 To install the app for your OS, please select the appropriate runnable from the releases on the [Release page](https://github.com/jeremyfix/dcejs/releases).
