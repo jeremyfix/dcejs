@@ -1,6 +1,6 @@
 const ssh2 = require('ssh2');
+const { spawn } = require('child_process');
 const { Socket, createServer, createConnection  } = require('net');
-const keygen = require('ssh-keygen');
 const fs = require('fs');
 const readline = require("readline");
 const path = require("path");
@@ -54,19 +54,31 @@ async function generateKey(privatekey_path, comment) {
 	let keypassphrase = await password_asker("Type a passphrase for your key (you must remember it!) : ");
 
 	return new Promise((resolve, reject) => {
-		keygen({
-			location: privatekey_path,
-			comment: comment,
-			password: keypassphrase,
-			size: default_keysize
-		}, function (err, out) {
-			if(err) 
-				reject('Something went wront in generating the key');
+
+		const cmd = 'ssh-keygen';
+		const opts = [
+			'-t', 'rsa', 
+			'-b', '4096',
+			'-C',  `"${comment}"`,
+			'-f', privatekey_path,
+			'-N', keypassphrase
+		];
+
+		const keygen = spawn(cmd, opts);
+		keygen.on('exit', () => {
 			console.log(`Key generated in ${privatekey_path}`);
 			resolve({
 				'keypath': privatekey_path, 
 				'keypass': keypassphrase
 			});
+		});
+		keygen.stdout.on('data', (data) => {
+			console.log(`Keygen stdout : ${data}`);
+			console.log(data);
+		});
+		keygen.stderr.on('data', (data) => {
+			console.log(`Keygen stderr : ${data}`);
+			reject(data);
 		});
 	});
 };
