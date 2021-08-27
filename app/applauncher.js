@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	startVNCBtn.addEventListener('click', startvnc);
 
 	let startNoMachineBtn = document.getElementById('startNoMachineBtn');
-	startNoMachineBtn.addEventListener('click', startvnc);
+	startNoMachineBtn.addEventListener('click', startnomachine);
 });
 
 window.api.receive('jobinfo' , (event ,arg) => {
