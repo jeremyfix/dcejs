@@ -6,7 +6,7 @@ Electron app to connect to the Data Center Enseignement clusters of CentraleSup√
 
 ## Installing
 
-To install the app for your OS, please select the appropriate runnable from the releases.
+To install the app for your OS, please select the appropriate runnable from the releases on the [Release page](https://github.com/jeremyfix/dcejs/releases).
 
 ## Running
 
