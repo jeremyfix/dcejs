@@ -22,6 +22,13 @@ function startvnc() {
 	});
 }
 
+function startnomachine() {
+	const jobid = parseInt(document.getElementById("jobid").innerHTML);
+	window.api.send("startnomachine", {
+		jobid: jobid
+	});
+}
+
 window.addEventListener('DOMContentLoaded', () => {
 	let killBtn = document.getElementById('killBtn');
 	killBtn.addEventListener('click', kill);
@@ -31,6 +38,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	let startVNCBtn = document.getElementById('startVNCBtn');
 	startVNCBtn.addEventListener('click', startvnc);
+
+	let startNoMachineBtn = document.getElementById('startNoMachineBtn');
+	startNoMachineBtn.addEventListener('click', startnomachine);
 });
 
 window.api.receive('jobinfo' , (event ,arg) => {
