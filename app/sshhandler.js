@@ -188,6 +188,7 @@ async function sshconnect(login, gateway,
 					} catch(err) {
 						  console.error(err)
 					}				
+					flogprogress(25, err);
 					throw `Error in the pipeline of key generation : ${err}`;
 				});
 		}

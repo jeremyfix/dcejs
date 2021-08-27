@@ -16,6 +16,10 @@ On all the OS, you can check this works by ensuring you can execute the command 
 
 To install the app for your OS, please select the appropriate runnable from the releases on the [Release page](https://github.com/jeremyfix/dcejs/releases).
 
+On Windows, you may need to "unlock the application" (in the properties of the exe file) to allow its execution.
+
+On MacOS, you also need to enforce MacOS to open the app even if it claims that the "developer cannot be verified".
+
 ## Running
 
 If you just want to test and run the app and have a Node installation, you just need to
