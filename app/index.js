@@ -82,6 +82,10 @@ window.api.receive("refresh-sessions", (event, arg) => {
 			newbody += `<td>localhost:${elem.vnc}</td>`;
 		else
 			newbody += `<td>--</td>`;
+		if(elem.nomachine != null) 
+			newbody += `<td>localhost:${elem.nomachine}</td>`;
+		else
+			newbody += `<td>--</td>`;
 		newbody += `<td>--</td>`;
 		newbody += `<td><button class="appstart" id="${elem.jobid},${firstnode}"><span class="apps">&#9881;</span>Apps</button></td>`;
 		newbody += "</tr>";

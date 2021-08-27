@@ -5,6 +5,7 @@ const sshhandler = require('./sshhandler.js');
 const slurm_requests = require('./slurm_requests.js');
 const screen = require("./screen.js");
 const vnc = require("./vnc.js");
+const nomachine = require("./nomachine.js");
 
 let mainWindow;
 let passwindow = null;
@@ -433,6 +434,38 @@ ipcMain.on("startvnc", (event, arg) => {
 			logfailure("Running VNC failed", `Error while running VNC ${error}`);
 		});
 });
+
+// Note : 
+// We need 1) to check nomachine is running  2) to bind nomachine
+ipcMain.on("startnomachine", (event, arg) => {
+	const jobid = arg.jobid;
+	logprogress(5, "Going to start NoMachine");
+
+	nomachine.check(jobid) 
+		.then((available) => {
+			if(!available) {
+				logfailure("NoMachine is not running on the server");
+				throw "nomachine not running";
+			}
+			logprogress(25, `NoMachine is running`);
+		})
+		.then(() => {
+			logprogress(50, `Setting up the ssh tunnel`);
+			// 4000 is the port on which nomachine is listening on the remote
+			return sshhandler.port_forward(jobid, 4000);
+		})
+		.then((srcport) => {
+			sshhandler.register_nodes_prop(jobid, 'nomachine_port', srcport);
+			logprogress(75, `Server ready`);
+		})
+		.then(refresh_sessions)
+		.then(() => {
+			logprogress(100, "NoMachine done. Please start your viewer.");
+		})
+		.catch(error => {
+			logfailure("Running NoMachine failed", `Error while running NoMachine ${error}`);
+		});
+})
 
 /*
  * Logging
