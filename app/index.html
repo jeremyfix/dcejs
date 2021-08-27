@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>DCE Connection tool</title>
+		<link rel="stylesheet" href="app.css">
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="header">
+				<b id="connection-status"><span class="dot disconnected"></span> disconnected</b>
+			</div>
+			<div class="sidebar">
+				<img src="./dce-coul.png" width="80%"><br/>
+				<img src="./cs.png" width="100%"><br/>
+				<div class="version">
+				<b id="app-version"></b>
+				</div>
+			</div>
+			<div class="content">
+				<p>
+				<form action="" method="get" id="connectionForm">
+					<label for="cluster-gateway">Gateway : </label>
+					<input type="text" id="cluster-gateway" name="cluster-gateway" value="ghome.metz.supelec.fr" readonly>
+					<label for="cluster-frontal">Frontal : </label>
+					<input type="text" id="cluster-frontal" name="cluster-frontal" value="gslurm" readonly>
+					<label for="cluster-choice">Cluster :</label>
+					<select id="cluster-choice" name="cluster-choice">
+						<option>GPU</option>
+						<option>CPU</option>
+					</select>
+					<label for="cluster-login">Login : </label>
+					<input type="text" id="cluster-login" name="cluster-login" required autofocus>
+					<button id="connectBtn"><span class="connect">&#128268;</span> Connect</button>
+					<button id="disconnectBtn" disabled><span class="disconnect">&#10060</span> Disconnect</button>
+				</form>
+				</p>
+
+			</div>
+			<div class="sessions" id="sessions" disabled>
+				<div class="title-sessions">List of your allocations</div>
+				<div class="sessionsbuttons">
+					<button id="refreshBtn">
+					<span class="reload">&#x21bb;</span> Refresh</button>
+					<button id="newsessionBtn"><span class="add">&#10133;</span> New</button>
+				</div>
+
+				<table>
+					<thead>
+						<tr>
+							<th>Job Id</th>
+							<th>Partition</th>
+							<th>Time</th>
+							<th>Nodelist</th>
+							<th>VNC</th>
+							<th>NoMachine</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody id="table-sessions">
+					</tbody>
+				</table>
+
+			</div>	
+			<div class="footer">
+				<p>
+				Log : <span id="logger" class="logger"></span> 
+				</p>
+				Progress: <div class="container-progress"><div class="progress" id="progressBar"></div></div>
+			</div>
+		</div>
+		<script src="./index.js"></script>
+	</body>
+</html>

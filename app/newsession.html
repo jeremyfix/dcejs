@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>New session</title>
+		<link rel="stylesheet" href="app.css">
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+	</head>
+	<body>
+		<!-- 
+	  walltime, partition
+
+	  ou
+
+	  reservation
+
+		-->	
+		<div class="wrapper">
+			<div class="header">
+				<div class="tab">
+					<button class="tablinks" id="defaultOpen">Without reservation</button>
+					<button class="tablinks">With reservation</button>
+				</div>
+			</div>
+
+			<div class="session">
+
+				<div id="Without reservation" class="tabcontent">
+					Please fill in the required parameters for you new allocation
+					<form action="" method="get">
+						<label for="partition">Partition (the maxtime is given as HH:MM or DD-HH:MM)</label>
+						<select name="partition" id="partitions">
+							<option value="sh20 20:00">Partition sh20, Maxtime  20:00, Nodes sh[02-10]</option>
+							<option value="sh100 100:00">Partition sh100, Maxtime 100:00, Nodes sh[02-10]</option>
+						</select>
+						<label for="walltime">Walltime (HH:MM)</label>
+						<input type="text" id="walltime" required>
+						<label class="error" id="error"></label>
+						<button id="validateBtn">Validate</button>
+					</form>
+				</div>
+
+				<div id="With reservation" class="tabcontent">
+					Please fill in the required parameters for you new allocation
+					<form action="" method="get">
+						<label for="reservation">Reservation</label>
+						<input type="text" id="reservation" required autofocus>
+						<label class="error" id="errorresa"></label>
+						<button id="validateResaBtn">Validate</button>
+					</form>
+				</div>
+
+			</div>
+		</div>
+		<script src="./newsession.js"></script>
+	</body>
+
+</html>
+
