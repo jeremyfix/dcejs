@@ -104,7 +104,8 @@ async function postKey(privatekey_path,
 	let gatewayparams = {
 		host: gateway,
 		username: login,
-		password: sshpassword
+		password: sshpassword,
+		readyTimeout: 99999  // required on windows apparently : see https://github.com/mscdex/ssh2/issues/142
 	};
 
 	return new Promise((resolve, reject) => {
@@ -211,7 +212,8 @@ async function sshconnect(login, gateway,
 		host: gateway,
 		username: login,
 		privateKey: pkey,
-		passphrase: key_passphrase
+		passphrase: key_passphrase,
+		readyTimeout: 99999 // required on windows apparently : see https://github.com/mscdex/ssh2/issues/142
 	};
 	let frontalparams = {
 		sock: null,
