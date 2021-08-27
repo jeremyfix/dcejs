@@ -150,7 +150,7 @@ function createNewSessionWindow() {
 		parent: mainWindow,
 		resizable: false,
 		alwaysOnTop: true,
-		closable: false,
+		closable: true,
 		modal: true,
 		show: false,
 		webPreferences: {
