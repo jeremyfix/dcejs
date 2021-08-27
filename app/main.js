@@ -32,7 +32,7 @@ app.on('ready', function() {
 		}
 	});
 	mainWindow.setMenu(null);
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
 
 	// and load the index.html of the app.
 	mainWindow.loadURL(
@@ -156,7 +156,7 @@ function createNewSessionWindow() {
 			preload: path.join(__dirname, "preload.js")
 		}
 	});
-	newsessionwindow.webContents.openDevTools();
+	// newsessionwindow.webContents.openDevTools();
 	newsessionwindow.setMenu(null);
 	newsessionwindow.loadURL(
 		url.format({
