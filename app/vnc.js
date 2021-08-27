@@ -22,7 +22,7 @@ function check(jobid) {
 
 // Returns the port of the vnc running server
 // Returns a Promise
-function get_ports(jobid) {
+function get_ports(jobid, attempts=2) {
 	const cmd = 'vncserver -list -cleanstale 2>/dev/null | tail -n +5 | awk \'{print \\\\\\$1,\\\\\\$2}\'';
 
 	return screen.run_in_screen(cmd, jobid)
@@ -48,6 +48,15 @@ function get_ports(jobid) {
 				vnc_ports.push(5900 + port);
 			});
 			return vnc_ports;
+		})
+		.catch(error => {
+			// This is a weird hack ..
+			// because of the comment above of getting some stdout
+			// while it should be filtered by tail
+			if(attempts == 0)
+				throw error;
+			console.log('One more attempt');
+			return get_ports(jobid, attempts-1);
 		});
 }
 
