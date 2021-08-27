@@ -1,6 +1,6 @@
 # DCEjs
 
-![DCE](https://github.com/jeremyfix/dcejs/blob/main/app/dce-coul.png?raw=true)
+<img src="https://github.com/jeremyfix/dcejs/blob/main/app/dce-coul.png?raw=true" style="max-width: 25%"/>
 ![CS Metz](https://github.com/jeremyfix/dcejs/blob/main/app/cs.png?raw=true)
 
 Electron app to connect to the Data Center Enseignement clusters of CentraleSupélec - Metz
