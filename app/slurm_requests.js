@@ -26,7 +26,7 @@ async function list_allocation() {
 					let nomachineport = null;
 					if(jobprops != null) {
 						vncport = jobprops.vnc_port;
-						// nomachineport = jobprops.nomachine_port;
+						nomachineport = jobprops.nomachine_port;
 					}
 					allocations.push({
 						jobid: fields[0],
@@ -38,7 +38,7 @@ async function list_allocation() {
 						nodes: fields[6],
 						nodelist: fields[7],
 						vnc: vncport,
-						nomachine: null
+						nomachine: nomachineport
 					});
 				}
 			});
