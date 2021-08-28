@@ -1,4 +1,5 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
+const { spawn } = require('child_process');
 const path = require("path");
 const url = require("url");
 const sshhandler = require('./sshhandler.js');
@@ -6,6 +7,8 @@ const slurm_requests = require('./slurm_requests.js');
 const screen = require("./screen.js");
 const vnc = require("./vnc.js");
 const nomachine = require("./nomachine.js");
+const fs = require('fs');
+const { readFile } = require('fs/promises');
 
 let mainWindow;
 let passwindow = null;
@@ -101,7 +104,12 @@ ipcMain.on("connect", (event, args) => {
 function refresh_sessions() {
 	slurm_requests.list_allocation()
 		.then((data) => {
-			mainWindow.webContents.send("refresh-sessions", data);
+			console.log("Refresh : ");
+			console.log(data);
+			mainWindow.webContents.send("refresh-sessions", {
+				platform: process.platform,
+				sessions: data
+			});
 		})
 		.catch(error => {
 			console.log(`Got an error ${error}`);
@@ -400,6 +408,7 @@ ipcMain.on("startx", (event, arg) => {
 // The buttons may be enabled only if there is some VNC running
 // The allocation list should show if there is a port forward or not
 ipcMain.on("startvnc", (event, arg) => {
+	appwindow.close();
 	const jobid = arg.jobid;
 	// Check if VNC is already running
 	logprogress(5, "Going to start VNC");
@@ -438,6 +447,7 @@ ipcMain.on("startvnc", (event, arg) => {
 // Note : 
 // We need 1) to check nomachine is running  2) to bind nomachine
 ipcMain.on("startnomachine", (event, arg) => {
+	appwindow.close();
 	const jobid = arg.jobid;
 	logprogress(5, "Going to start NoMachine");
 
@@ -465,6 +475,37 @@ ipcMain.on("startnomachine", (event, arg) => {
 		.catch(error => {
 			logfailure("Running NoMachine failed", `Error while running NoMachine ${error}`);
 		});
+})
+
+ipcMain.on("start_app", (event, arg) => {
+	if(arg.application == 'vnc') {
+		const cmd = "vncviewer";
+		const opts = [
+			arg.params.hostport
+		];
+		console.log(`Running vncviewer ${arg.params}`);
+		spawn(cmd, opts);
+	}
+	else {
+		// Takes the template 
+		const connectionTemplatepath = path.join(__dirname, 'extraResources', 'connection.nxs');
+		readFile(connectionTemplatepath, {encoding: 'utf-8'})
+			.then((data) => {
+				const user = arg.params.user;
+				const port = arg.params.hostport.split(':')[1];
+				// Write the config file 
+				const connectionpath = path.join(app.getPath('userData'), `connection${port}.xs`);
+				const outdata = data.replace("MYNOMACHINEPORT", port).replace("MYNOMACHINEUSER", user);
+				fs.writeFileSync(connectionpath, outdata);
+				console.log(`File ${connectionpath} generated`);
+				// And starts it with nxplayer
+				const cmd = "/usr/NX/bin/nxplayer"
+				const opts = [
+					'--session', connectionpath
+				];
+				spawn(cmd, opts);	
+			})
+	}
 })
 
 /*

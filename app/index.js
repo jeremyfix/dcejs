@@ -1,5 +1,4 @@
 function fillGatewayFrontal() {
-	console.log('callback');
 	let cluster = document.getElementById("cluster-choice");
 	let gateway = document.getElementById("cluster-gateway");
 	let frontal = document.getElementById("cluster-frontal");
@@ -61,6 +60,12 @@ window.api.receive('progress', (event, arg) => {
 	}
 })
 
+function start_app(application, params) {
+	window.api.send('start_app', {
+		application: application,
+		params: params
+	});
+} 
 
 function show_app(jobid, firstnode) {
 	window.api.send('show_app', {
@@ -71,19 +76,22 @@ function show_app(jobid, firstnode) {
 
 window.api.receive("refresh-sessions", (event, arg) => {
 	let newbody = '';
-	arg.forEach(elem => {
+	const platform = arg.platform;
+	const startappcls_vnc = ((platform == 'linux') || (platform == 'darwin')) ? 'startapp' : '';
+	const startappcls_nomachine = (platform == 'linux') ? 'startapp' : '';
+	arg.sessions.forEach(elem => {
 		const firstnode = elem.nodelist.split(",")[0];
 		newbody += `<tr class="trjobids" id="${elem.jobid},${firstnode}">`;
 		newbody += `<td>${elem.jobid}</td>`;
 		newbody += `<td>${elem.partition}</td>`;
 		newbody += `<td>${elem.time}</td>`;
 		newbody += `<td>${elem.nodelist}</td>`;
-		if(elem.vnc != null) 
-			newbody += `<td>localhost:${elem.vnc}</td>`;
+		if(elem.vnc != null)
+			newbody += `<td class="${startappcls_vnc}" id="vnc">localhost:${elem.vnc}</td>`;
 		else
 			newbody += `<td>--</td>`;
 		if(elem.nomachine != null) 
-			newbody += `<td>localhost:${elem.nomachine}</td>`;
+			newbody += `<td class="${startappcls_nomachine}" id="nomachine">localhost:${elem.nomachine}</td>`;
 		else
 			newbody += `<td>--</td>`;
 		newbody += `<td><button class="appstart" id="${elem.jobid},${firstnode}"><span class="apps">&#9881;</span>Apps</button></td>`;
@@ -93,11 +101,20 @@ window.api.receive("refresh-sessions", (event, arg) => {
 	table.innerHTML = newbody;
 
 	document.querySelectorAll("button.appstart").forEach(elem => {
-		console.log(`my id is ${elem.id}`);
 		elem.addEventListener('click', () => { 
 			const elems = elem.id.split(',');
 			show_app(elems[0], elems[1]); 
 		});
+	});
+
+	document.querySelectorAll("td.startapp").forEach(elem => {
+		elem.addEventListener('click', () => { 
+			start_app(elem.id,  {
+				user: document.getElementById('cluster-login').value,
+				hostport: elem.innerHTML
+			}); 
+		});
+		
 	});
 	
 });

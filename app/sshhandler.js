@@ -489,13 +489,16 @@ function port_forward(jobid, dstport) {
 				socket.on("error", (err) => {
 					console.log(`Forward socket error : ${err}`);
 				});
-				conn.forwardOut('localhost', srcport, 'localhost', dstport, 
-					(error, stream) => {
-						if(error)
-							return reject(error);
-						socket.pipe(stream);
-						stream.pipe(socket);
-					});
+				conn.on('ready', () => {
+					conn.forwardOut('localhost', srcport, 'localhost', dstport, 
+						(error, stream) => {
+							if(error)
+								return reject(error);
+							socket.pipe(stream);
+							stream.pipe(socket);
+						});
+
+				})
 			})
 				.listen(srcport, 'localhost', () => { return resolve(srcport); })
 		});
