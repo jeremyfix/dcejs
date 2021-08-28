@@ -1,3 +1,4 @@
+const { app } = require('electron');
 const ssh2 = require('ssh2');
 const { spawn } = require('child_process');
 const { Socket, createServer, createConnection  } = require('net');
@@ -18,7 +19,7 @@ rl._writeToOutput = function _writeToOutput(stringToWrite) {
 		rl.output.write(stringToWrite);
 };
 
-const default_keypath = path.join(__dirname, 'dcekey');
+const default_keypath = path.join(app.getPath('userData'), 'dcekey');
 const default_comment = 'DCE Key';
 const default_keysize = 4096;
 let ssh_frontal;
