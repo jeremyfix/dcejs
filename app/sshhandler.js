@@ -2,6 +2,7 @@ const ssh2 = require('ssh2');
 const { spawn } = require('child_process');
 const { Socket, createServer, createConnection  } = require('net');
 const fs = require('fs');
+const { readFile } = require('fs/promises');
 const readline = require("readline");
 const path = require("path");
 
@@ -88,45 +89,55 @@ async function generateKey(privatekey_path, comment) {
  */
 async function postKey(privatekey_path,
 	login,
-	gateway) {
+	gateway, 
+ 	flogprogress) {
 	// to post a key we need a one shot ssh connection
 	// with password based auth (to be asked)
 	// and then we need to append the content of the public key
 	// to the ~/.ssh/authorized
-	const data = fs.readFileSync(privatekey_path+".pub",
-		{encoding: 'utf-8',
-		flag:'r'});
-	
-	cmd = "echo \"" + data.trim() + "\" >> ~/.ssh/authorized_keys";
-	
-	let sshpassword = await password_asker(`Provide the password for ${login}@${gateway} : `);
+	flogprogress(21, 'Reading the ssh key');
+	let keycontent;
+	return readFile(privatekey_path+".pub", {encoding: 'utf8'})
+		.then((data) => {
+			keycontent = data;
+			flogprogress(22, 'Asking for the gateway password');
+			cmd = "echo \"" + data.trim() + "\" >> ~/.ssh/authorized_keys";
 
-	let gatewayparams = {
-		host: gateway,
-		username: login,
-		password: sshpassword,
-		readyTimeout: 99999  // required on windows apparently : see https://github.com/mscdex/ssh2/issues/142
-	};
+			return password_asker(`Provide the password for ${login}@${gateway} : `);
+		})
+		.then((sshpassword) => {
 
-	return new Promise((resolve, reject) => {
-		const conn = new ssh2.Client();
-		conn.on('ready', () => {
-			conn.exec(cmd, (err, stream) => {
-				if(err) reject(err);
-				stream
-					.on('close', () => {
-						conn.end();
-						resolve();
+			let gatewayparams = {
+				host: gateway,
+				username: login,
+				password: sshpassword,
+				readyTimeout: 99999  // required on windows apparently : see https://github.com/mscdex/ssh2/issues/142
+			};
+
+			return new Promise((resolve, reject) => {
+				const conn = new ssh2.Client();
+				flogprogress(23, 'Connecting to the gateway for posting the key');
+				conn.on('ready', () => {
+					conn.exec(cmd, (err, stream) => {
+						if(err) reject(err);
+						flogprogress(24, 'Sending the key');
+						stream
+							.on('close', () => {
+								flogprogress(25, 'Key sent !');
+								conn.end();
+								resolve();
+							})
+							.on('data', (data) => {
+							})
+							.stderr.on('data', (data) => {
+								reject(data);
+							});
+
 					})
-					.on('data', (data) => {
-					})
-					.stderr.on('data', (data) => {
-						reject(data);
-					});
+				}).connect(gatewayparams);
+			});
 
-			})
-		}).connect(gatewayparams);
-	});
+		});
 }
 
 /**
@@ -176,7 +187,7 @@ async function sshconnect(login, gateway,
 					key_passphrase = genparams.keypass;
 					return postKey(genparams.keypath,
 						login,
-						gateway); // Post
+						gateway, flogprogress); // Post
 				})
 				.catch(err => {
 					// If we have a failure, we must be removing the possibly
@@ -193,8 +204,9 @@ async function sshconnect(login, gateway,
 					throw `Error in the pipeline of key generation : ${err}`;
 				});
 		}
-		else // otherwise propagate the exception
+		else { // otherwise propagate the exception
 			throw err;
+		}
 	}
 	if(valid_privatekey_path == null) {
 		throw "ssh-key step failed";
