@@ -92,7 +92,7 @@ ipcMain.on("connect", (event, args) => {
 		})
 		.then(refresh_sessions)
 		.catch(error => {
-			console.log(`Got an error ${error}`);
+			logfailure(error, error);
 			connection_status = "failed";
 			mainWindow.webContents.send("connection-status", connection_status);
 		});
