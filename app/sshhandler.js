@@ -95,7 +95,7 @@ async function postKey(privatekey_path,
 	// with password based auth (to be asked)
 	// and then we need to append the content of the public key
 	// to the ~/.ssh/authorized
-	flogprogress(21, 'Reading the ssh key');
+	flogprogress(21, `Reading the ssh key ${privatekey_path}.pub` );
 	let keycontent;
 	return readFile(privatekey_path+".pub", {encoding: 'utf8'})
 		.then((data) => {
