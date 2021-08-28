@@ -12,6 +12,10 @@ We need you to have `ssh-keygen` installed on your system. On Linux or MacOS, th
 
 On all the OS, you can check this works by ensuring you can execute the command `ssh-keygen` from a terminal.
 
+If you want to use VNC, you should also install the [tigerVNC client](https://sourceforge.net/projects/tigervnc/files/).
+
+If you want to use NoMachine, you should also install the [NoMachine client](www.nomachine.com)
+
 ## Installing
 
 To install the app for your OS, please select the appropriate runnable from the releases on the [Release page](https://github.com/jeremyfix/dcejs/releases).
