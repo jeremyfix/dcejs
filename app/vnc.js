@@ -74,6 +74,7 @@ function start(jobid) {
 		})
 		.then(() => {
 			const cmd = "vncserver -SecurityTypes None -depth 32 -geometry 1680x1050 -cleanstale";
+			//TODO: check if return stderr is not empty ?
 			return screen.run_in_screen(cmd, jobid);
 		});
 }
