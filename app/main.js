@@ -478,7 +478,7 @@ ipcMain.on("start_app", (event, arg) => {
 		const opts = [
 			arg.params.hostport
 		];
-		console.log(`Running vncviewer ${arg.params}`);
+		console.log(`Running vncviewer ${arg.params.hostport}`);
 		spawn(cmd, opts);
 	}
 	else {
