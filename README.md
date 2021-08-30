@@ -22,7 +22,7 @@ To install the app for your OS, please select the appropriate runnable from the 
 
 On Windows, you may need to "unlock the application" (in the properties of the exe file) to allow its execution.
 
-On MacOS, you also need to enforce MacOS to open the app even if it claims that the "developer cannot be verified".
+On MacOS, you also need to enforce MacOS to open the app even if it claims that the "developer cannot be verified". This can be done by Ctrl clicking on the app for launching it.
 
 ## Running
 
