@@ -63,8 +63,19 @@ function get_ports(jobid, attempts=2) {
 // Starts VNC on the remote
 // Returns a Promise
 function start(jobid) {
-	const cmd = "vncserver -SecurityTypes None -depth 32 -geometry 1680x1050 -cleanstale";
-	return screen.run_in_screen(cmd, jobid);
+	// Check if the file Xstartup exists on the remote, otherwise create one
+	let cmd = "if [ -f ~/.vnc/xstartup ]; then echo 0; else echo 1; fi";
+	return screen.run_in_screen(cmd, jobid)
+		.then(stds => {
+			if(stds.stdout == "0") {
+				return new Promise();
+			}
+			throw "The xstartup file does not exist";
+		})
+		.then(() => {
+			const cmd = "vncserver -SecurityTypes None -depth 32 -geometry 1680x1050 -cleanstale";
+			return screen.run_in_screen(cmd, jobid);
+		});
 }
 
 module.exports = {

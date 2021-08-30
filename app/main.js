@@ -437,7 +437,7 @@ ipcMain.on("startvnc", (event, arg) => {
 			logprogress(100, "VNC done. Please start your viewer.");
 		})
 		.catch(error => {
-			logfailure("Running VNC failed", `Error while running VNC ${error}`);
+			logfailure(`Running VNC failed: ${error}`, `Error while running VNC ${error}`);
 		});
 });
 
