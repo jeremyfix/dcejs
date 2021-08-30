@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain} = require('electron');
+const {app, BrowserWindow, ipcMain, Menu, dialog } = require('electron');
 const { spawn } = require('child_process');
 const path = require("path");
 const url = require("url");
@@ -20,6 +20,64 @@ const logdirectory="~/.cscluster/"
 
 if(require('electron-squirrel-startup')) return;
 
+function createMainMenu() {
+	const isMac = process.platform === 'darwin';
+	const template = [
+		// { role: 'appMenu' }
+		...(isMac ? [{
+			label: app.name,
+			submenu: [
+				{ role: 'about' },
+				{ type: 'separator' },
+				{ role: 'services' },
+				{ type: 'separator' },
+				{ role: 'hide' },
+				{ role: 'hideOthers' },
+				{ role: 'unhide' },
+				{ type: 'separator' },
+				{ role: 'quit' }
+			]
+		}] : []),
+		// { role: 'fileMenu' }
+		{
+			label: 'File',
+			submenu: [
+				isMac ? { role: 'close' } : { role: 'quit' },
+			]
+		},
+		{
+			label: "SSH Keys",
+			submenu: [
+				{
+					label: "Delete the keys",
+					click: async () => {
+						const win = BrowserWindow.getFocusedWindow();
+						const options = {
+							type: 'question',
+							buttons: ['Yes', 'No'],
+							title: 'Delete the keys ?',
+							message: 'Do you really want to delete your local ssh keys ?'
+						};
+						dialog.showMessageBoxSync(win, options)
+							.then((choice) => {
+								if(choice.response === 0) {
+
+								}	
+								else {
+
+								}
+							})
+							.catch(error => {
+								
+							});
+					}
+				}
+			]
+		}
+	];
+	return Menu.buildFromTemplate(template);
+}
+
 // This method will be called when Electron has done everything
 // initialization and ready for creating browser windows.
 app.on('ready', function() {
@@ -35,7 +93,7 @@ app.on('ready', function() {
 			preload: path.join(__dirname, "preload.js")
 		}
 	});
-	mainWindow.setMenu(null);
+	mainWindow.setMenu(createMainMenu());
 	// mainWindow.webContents.openDevTools();
 
 	// and load the index.html of the app.
