@@ -473,15 +473,45 @@ ipcMain.on("startnomachine", (event, arg) => {
 })
 
 ipcMain.on("start_app", (event, arg) => {
+	const platform = process.platform;
+	let programs = {
+		vnc: null,
+		nxplayer: null
+	};
+	if(platform == 'linux') {
+		programs.vnc = '/usr/bin/vncviewer';
+		programs.nxplayer = '/usr/NX/bin/nxplayer';
+	}
+	else if(platform == 'darwin') {
+		programs.vnc = null; 
+		programs.nxplayer = '/Applications/NoMachine.app/Contents/MacOS/nxplayer';
+	}
+
 	if(arg.application == 'vnc') {
-		const cmd = "vncviewer";
+		console.log('Running vnc');
+		console.log(programs);
+		if(programs.vnc == null)
+			return;
+		if(!(fs.existsSync(programs.vnc))) {
+			logfailure(`Cannot find ${programs.vnc}. You will have to run VNC manually`);
+			return;
+		}
+
+		const cmd = programs.vnc;
 		const opts = [
 			arg.params.hostport
 		];
-		console.log(`Running vncviewer ${arg.params.hostport}`);
 		spawn(cmd, opts);
 	}
 	else {
+		if(programs.nxplayer == null)
+			return;
+		if(!(fs.existsSync(programs.nxplayer))) {
+			logfailure(`Cannot find ${programs.vnc}. You will have to run nxplayer manually`);
+			return;
+		}
+
+		const cmd = programs.nxplayer;
 		// Takes the template 
 		const connectionTemplatepath = path.join(__dirname, 'extraResources', 'connection.nxs');
 		readFile(connectionTemplatepath, {encoding: 'utf-8'})
@@ -494,7 +524,7 @@ ipcMain.on("start_app", (event, arg) => {
 				fs.writeFileSync(connectionpath, outdata);
 				console.log(`File ${connectionpath} generated`);
 				// And starts it with nxplayer
-				const cmd = "/usr/NX/bin/nxplayer"
+				
 				const opts = [
 					'--session', connectionpath
 				];
