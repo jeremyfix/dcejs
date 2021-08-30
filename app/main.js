@@ -80,8 +80,7 @@ app.on('ready', function() {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
-	if (process.platform != 'darwin')
-		app.quit();
+	app.quit();
 });
 
 ipcMain.on("connect", (event, args) => {
