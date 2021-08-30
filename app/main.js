@@ -102,7 +102,7 @@ ipcMain.on("connect", (event, args) => {
 });
 
 function refresh_sessions() {
-	slurm_requests.list_allocation()
+	return slurm_requests.list_allocation()
 		.then((data) => {
 			console.log("Refresh : ");
 			console.log(data);
@@ -322,17 +322,12 @@ ipcMain.on("request-new-session", async (event, args) => {
 		if(res_cmd !== '0')
 			throw `The session ${session_name} was not found as expected`;
 		
+		// Update the list of sessions
+		refresh_sessions();
+		
 		logprogress(100, `We are there, ready to work !`);
 		console.log(`Session ${session_name} created`);
 
-		// Update the list of sessions
-		slurm_requests.list_allocation()
-			.then((data) => {
-				mainWindow.webContents.send("refresh-sessions", data);
-			})
-			.catch(error => {
-				console.log(`Got an error ${error}`);
-			});
 	}
 	catch(error) {
 		logfailure("New session creation failed", `Error while creating a new session ${error}`);
