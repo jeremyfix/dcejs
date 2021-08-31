@@ -504,7 +504,6 @@ function find_free_port(start_port, max_port) {
 }
 
 function port_forward(jobid, dstport) {
-	const conn = ssh_nodes[jobid].conn;
 	return find_free_port(dstport, dstport + 1000).then((srcport) => {
 		console.log(`Found a free port ${srcport}`);
 		return new Promise((resolve, reject) => { 
@@ -512,6 +511,7 @@ function port_forward(jobid, dstport) {
 				socket.on("error", (err) => {
 					console.log(`Forward socket error : ${err}`);
 				});
+				const conn = ssh_nodes[jobid].conn;
 				conn.forwardOut('localhost', srcport, 'localhost', dstport, 
 					(error, stream) => {
 						if(error)
