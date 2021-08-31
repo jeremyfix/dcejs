@@ -1,5 +1,7 @@
-const { jp } = require('jsonpath');
-const parser = require('xml2json');
+if(process.platform === 'darwin') {
+	const { jp } = require('jsonpath');
+	const parser = require('xml2json');
+}
 const path = require('path');
 const { spawn } = require('child_process');
 const fs = require('fs');
