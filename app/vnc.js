@@ -79,8 +79,53 @@ function start(jobid) {
 		});
 }
 
+function find_vncviewer() {
+	return new Promise((resolve, reject) => {
+		const platform = process.platform;
+		let pathtoprog = null;
+		if(platform == 'linux') {
+			resolve('/usr/bin/vncviewer');
+		}
+		else if(platform == 'darwin') {
+			const cmd = 'system_profiler';
+			const options = [
+				'-xml', 'SPApplicationsDataType'
+			];
+			let profile = '';
+			const sp = spawn(cmd, options);
+			sp.stdout.on('data', data => {
+				profile += data;
+			});
+			sp.stderr.on('data', data => {
+				reject(`Error when looking for nomachine : ${data}`);
+			});
+
+			sp.stdout.on('end', () => {
+				profile = parser.toJson(profile, {object: true});	
+				const entries = jp
+					.query(profile, 'plist.array.dict.array[1].dict[*]');
+				entry.forEach(elem => {
+					if(elem.string[0].match(/^TigerVNC/g)) 
+						pathtoprog = elem.string[4];
+				});
+				if(pathtoprog == null)
+					reject('VNCViewer not available');
+
+				pathtoprog = pathtoprog.replace(/\s/g, ' \\');
+				pathtoprog = path.join(pathtoprog, 'Contents', 'MacOS', 'TigerVNC\\ Viewer');
+				resolve(pathtoprog);
+			});
+		}
+		else {
+			reject('VNCViewer not available');
+		}
+	});
+}
+
+
 module.exports = {
 	check,
 	get_ports,
-	start
+	start,
+	find_vncviewer
 }
