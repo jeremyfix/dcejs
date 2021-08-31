@@ -566,7 +566,7 @@ ipcMain.on("start_app", async (event, arg) => {
 
 		const cmd = programs.nxplayer;
 		// Takes the template 
-		const connectionTemplatepath = path.join(__dirname, 'extraResources', 'connection.nxs');
+		const connectionTemplatepath = path.join(__dirname, 'connection.nxs');
 		readFile(connectionTemplatepath, {encoding: 'utf-8'})
 			.then((data) => {
 				const user = arg.params.user;

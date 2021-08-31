@@ -34,15 +34,6 @@
 			"**/*",
 			"../build/icons/icon*"
 		],
-		"extraResources": [
-			{
-				"from": "extraResources",
-				"to": "extraResources",
-				"filter": [
-					"**/*"
-				]
-			}
-		],
 		"mac": {
 			"category": "public.app-category.developer-tools",
 			"artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
