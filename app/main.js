@@ -530,16 +530,9 @@ ipcMain.on("startnomachine", (event, arg) => {
 ipcMain.on("start_app", async (event, arg) => {
 	const platform = process.platform;
 	let programs = {
-		vnc: null,
+		vnc: await vnc.find_vncviewer(),
 		nxplayer: await nomachine.find_nomachine()
 	};
-
-	if(platform == 'linux') {
-		programs.vnc = '/usr/bin/vncviewer';
-	}
-	else if(platform == 'darwin') {
-		programs.vnc = null; 
-	}
 
 	if(arg.application == 'vnc') {
 		console.log('Running vnc');
