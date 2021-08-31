@@ -1,6 +1,9 @@
+let jsonpath;
+let parser;
+
 if(process.platform === 'darwin') {
-	const { jp } = require('jsonpath');
-	const parser = require('xml2json');
+	jsonpath = require('jsonpath');
+	parser = require('xml2json');
 }
 const path = require('path');
 const { spawn } = require('child_process');
@@ -49,7 +52,7 @@ function find_nomachine() {
 
 			sp.stdout.on('end', () => {
 				profile = parser.toJson(profile, {object: true});	
-				const entries = jp
+				const entries = jsonpath
 					.query(profile, '$..dict[?(@.string[0]=="NoMachine")]');
 				if(entries.length == 0)
 					reject('NoMachine not available');

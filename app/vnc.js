@@ -1,6 +1,9 @@
+let jsonpath;
+let parser;
+
 if(process.platform === 'darwin') {
-	const { jp } = require('jsonpath');
-	const parser = require('xml2json');
+	jsonpath = require('jsonpath');
+	parser = require('xml2json');
 }
 const path = require('path');
 const { spawn } = require('child_process');
@@ -109,7 +112,7 @@ function find_vncviewer() {
 
 			sp.stdout.on('end', () => {
 				profile = parser.toJson(profile, {object: true});	
-				const entries = jp
+				const entries = jsonpath
 					.query(profile, 'plist.array.dict.array[1].dict[*]');
 				entry.forEach(elem => {
 					if(elem.string[0].match(/^TigerVNC/g)) 
