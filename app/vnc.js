@@ -114,7 +114,7 @@ function find_vncviewer() {
 				profile = parser.toJson(profile, {object: true});	
 				const entries = jsonpath
 					.query(profile, 'plist.array.dict.array[1].dict[*]');
-				entry.forEach(elem => {
+				entries.forEach(elem => {
 					if(elem.string[0].match(/^TigerVNC/g)) 
 						pathtoprog = elem.string[4];
 				});
