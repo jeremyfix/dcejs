@@ -58,18 +58,13 @@ function createMainMenu() {
 							title: 'Delete the keys ?',
 							message: 'Do you really want to delete your local ssh keys ?'
 						};
-						dialog.showMessageBoxSync(win, options)
-							.then((choice) => {
-								if(choice.response === 0) {
-
-								}	
-								else {
-
+						dialog.showMessageBox(win, options)
+							.then(result => {
+								if(result.response == 0) {
+									console.log("Suppressing the keys");
+									sshhandler.delete_keys();
 								}
-							})
-							.catch(error => {
-								
-							});
+						});
 					}
 				}
 			]
@@ -94,7 +89,7 @@ app.on('ready', function() {
 		}
 	});
 	mainWindow.setMenu(createMainMenu());
-	// mainWindow.webContents.openDevTools();
+	mainWindow.webContents.openDevTools();
 
 	// and load the index.html of the app.
 	mainWindow.loadURL(

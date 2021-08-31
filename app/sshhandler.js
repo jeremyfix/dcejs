@@ -159,6 +159,29 @@ function checkforkey(privatekey_path=default_keypath) {
 			throw "Keyfile does not exist";
 		});
 };
+	
+function delete_keys(privatekey_path=default_keypath) {
+	// For the GPUs
+	const gpukey = privatekey_path + "gslurm";
+	try {
+		fs.unlinkSync(gpukey);
+		fs.unlinkSync(gpukey+'.pub');
+		console.log(`Suppressed ${gpukey}`);
+	}
+	catch(error) {
+		console.log(`Got the error ${error}`);
+	}
+	// For the CPUs
+	const cpukey = privatekey_path + "cslurm";
+	try {
+		fs.unlinkSync(cpukey);
+		fs.unlinkSync(cpukey+'.pub');
+		console.log(`Suppressed ${cpukey}`);
+	}
+	catch(error) {
+		console.log(`Got the error ${error}`);
+	}
+}
 
 /**
  * Establish the ssh connections and, on the way
@@ -504,6 +527,7 @@ function port_forward(jobid, dstport) {
 }
 
 module.exports = {
+	delete_keys,
 	ssh_frontal,
 	ssh_gateway,
 	sshconnect,
