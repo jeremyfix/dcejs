@@ -68,7 +68,7 @@ function start(jobid) {
 	return screen.run_in_screen(cmd, jobid)
 		.then(stds => {
 			if(stds.stdout == "0") {
-				return new Promise();
+				return new Promise((resolve, reject) => { resolve(); });
 			}
 			throw "The xstartup file does not exist";
 		})
