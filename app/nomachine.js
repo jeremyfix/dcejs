@@ -51,8 +51,8 @@ function find_nomachine() {
 					.query(profile, '$..dict[?(@.string[0]=="NoMachine")]');
 				if(entries.length == 0)
 					reject('NoMachine not available');
-				const entry = entries[0];
-				resolve(path.join(entry.string[4], 'Contents', 'MacOS' ,'nxplayer'));
+				const entry = entries[0].string[4].replace(/\s/g, ' \\');
+				resolve(path.join(entry, 'Contents', 'MacOS' ,'nxplayer'));
 			});
 		}
 		else {
