@@ -527,19 +527,18 @@ ipcMain.on("startnomachine", (event, arg) => {
 		});
 })
 
-ipcMain.on("start_app", (event, arg) => {
+ipcMain.on("start_app", async (event, arg) => {
 	const platform = process.platform;
 	let programs = {
 		vnc: null,
-		nxplayer: null
+		nxplayer: await nomachine.find_nomachine()
 	};
+
 	if(platform == 'linux') {
 		programs.vnc = '/usr/bin/vncviewer';
-		programs.nxplayer = '/usr/NX/bin/nxplayer';
 	}
 	else if(platform == 'darwin') {
 		programs.vnc = null; 
-		programs.nxplayer = '/Applications/NoMachine.app/Contents/MacOS/nxplayer';
 	}
 
 	if(arg.application == 'vnc') {
@@ -562,7 +561,7 @@ ipcMain.on("start_app", (event, arg) => {
 		if(programs.nxplayer == null)
 			return;
 		if(!(fs.existsSync(programs.nxplayer))) {
-			logfailure(`Cannot find ${programs.vnc}. You will have to run nxplayer manually`);
+			logfailure(`Cannot find ${programs.nomachine}. You will have to run nxplayer manually`);
 			return;
 		}
 

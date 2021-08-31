@@ -1,3 +1,9 @@
+const { jp } = require('jsonpath');
+const parser = require('xml2json');
+const path = require('path');
+const { spawn } = require('child_process');
+const fs = require('fs');
+
 const sshhandler = require('./sshhandler.js');
 const screen = require('./screen.js');
 
@@ -18,6 +24,44 @@ function check(jobid) {
 		});
 }
 
+function find_nomachine() {
+	return new Promise((resolve, reject) => {
+		const platform = process.platform;
+		let pathtoprog = null;
+		if(platform == 'linux') {
+			resolve('/usr/NX/bin/nxplayer');
+		}
+		else if(platform == 'darwin') {
+			const cmd = 'system_profiler';
+			const options = [
+				'-xml', 'SPApplicationsDataType'
+			];
+			let profile = '';
+			const sp = spawn(cmd, options);
+			sp.stdout.on('data', data => {
+				profile += data;
+			});
+			sp.stderr.on('data', data => {
+				reject(`Error when looking for nomachine : ${data}`);
+			});
+
+			sp.stdout.on('end', () => {
+				profile = parser.toJson(profile, {object: true});	
+				const entries = jp
+					.query(profile, '$..dict[?(@.string[0]=="NoMachine")]');
+				if(entries.length == 0)
+					reject('NoMachine not available');
+				const entry = entries[0];
+				resolve(path.join(entry.string[4], 'Contents', 'MacOS' ,'nxplayer'));
+			});
+		}
+		else {
+			reject('NoMachine not available');
+		}
+	});
+}
+
 module.exports = {
-	check
+	check,
+	find_nomachine
 }
