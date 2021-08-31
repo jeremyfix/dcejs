@@ -77,7 +77,7 @@ function show_app(jobid, firstnode) {
 window.api.receive("refresh-sessions", (event, arg) => {
 	let newbody = '';
 	const platform = arg.platform;
-	const startappcls_vnc = (platform == 'linux') ? 'startapp' : '';
+	const startappcls_vnc = ((platform == 'linux') || (platform == 'darwin')) ? 'startapp' : '';
 	const startappcls_nomachine = ((platform == 'linux') || (platform == 'darwin')) ? 'startapp' : '';
 	arg.sessions.forEach(elem => {
 		const firstnode = elem.nodelist.split(",")[0];
