@@ -329,7 +329,13 @@ ipcMain.on("request-new-session", async (event, args) => {
 		// Book a node within the screen session
 		let partition = args.partition;
 		let walltime = args.walltime;
-		let slurm_cmd=`'srun -N 1 --exclusive -p ${partition} -t ${walltime} --epilog="${screen_epilog}" --pty bash^M'`;
+		let resa = args.reservation;
+
+		let slurm_cmd;
+		if(resa == null) 
+			slurm_cmd =`'srun -N 1 --exclusive -p ${partition} -t ${walltime} --epilog="${screen_epilog}" --pty bash^M'`;
+		else
+			slurm_cmd=`'srun -N 1 --exclusive --reservation ${resa} --epilog="${screen_epilog}" --pty bash^M'`;
 		cmd = `screen -S ${screen.get_screen_name()} -X stuff ${slurm_cmd}`;
 		logprogress(50, `Allocating a node with srun`);
 		await sshhandler.execute_on_frontal(cmd);
