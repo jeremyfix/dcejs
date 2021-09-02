@@ -92,7 +92,7 @@ app.on('ready', function() {
 			preload: path.join(__dirname, "preload.js")
 		}
 	});
-	mainWindow.setMenu(createMainMenu());
+	Menu.setApplicationMenu(createMainMenu());
 	// mainWindow.webContents.openDevTools();
 
 	// and load the index.html of the app.
