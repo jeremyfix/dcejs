@@ -23,28 +23,6 @@ if(require('electron-squirrel-startup')) return;
 function createMainMenu() {
 	const isMac = process.platform === 'darwin';
 	const template = [
-		// { role: 'appMenu' }
-		...(isMac ? [{
-			label: app.name,
-			submenu: [
-				{ role: 'about' },
-				{ type: 'separator' },
-				{ role: 'services' },
-				{ type: 'separator' },
-				{ role: 'hide' },
-				{ role: 'hideOthers' },
-				{ role: 'unhide' },
-				{ type: 'separator' },
-				{ role: 'quit' }
-			]
-		}] : []),
-		// { role: 'fileMenu' }
-		{
-			label: 'File',
-			submenu: [
-				isMac ? { role: 'close' } : { role: 'quit' },
-			]
-		},
 		{
 			label: "SSH Keys",
 			submenu: [
@@ -70,6 +48,32 @@ function createMainMenu() {
 			]
 		}
 	];
+
+	if (process.platform === 'darwin') {
+		template.unshift({
+			label: app.getName(),
+			submenu: [
+				{role: 'about'},
+				{type: 'separator'},
+				{role: 'services', submenu: []},
+				{type: 'separator'},
+				{role: 'hide'},
+				{role: 'hideothers'},
+				{role: 'unhide'},
+				{type: 'separator'},
+				{role: 'close'}
+			]
+		});
+	}
+	else {
+		template.unshift({
+			label: "File",
+			submenu: [ {
+				role: 'quit'
+			}]
+		});
+	}
+
 	return Menu.buildFromTemplate(template);
 }
 
