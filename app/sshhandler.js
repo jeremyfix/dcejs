@@ -276,7 +276,10 @@ async function sshconnect(login, gateway,
 		module.exports.ssh_gateway = ssh_gateway;
 		module.exports.ssh_frontal = ssh_frontal;
 		flogprogress(40, "Connecting to the gateway...");
-
+		ssh_gateway.on('error', (error) => {
+			console.log(error);
+			reject("Unable to connect : invalid login and/or password");
+		});
 		ssh_gateway.on('ready', () => {
 			flogprogress(60, "Connected to the gateway.");
 	
@@ -294,6 +297,10 @@ async function sshconnect(login, gateway,
 			flogprogress(80, "Connecting to the frontal...");
 		}).connect(gatewayparams);
 	
+		ssh_frontal.on('error', (error) => {
+			console.log(error);
+			reject("Unable to connect : invalid login and/or password");
+		});
 		ssh_frontal.on('ready', () => {
 			flogprogress(100, "Connection done");
 			resolve();
