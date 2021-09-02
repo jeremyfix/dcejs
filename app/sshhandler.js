@@ -118,6 +118,10 @@ async function postKey(privatekey_path,
 			return new Promise((resolve, reject) => {
 				const conn = new ssh2.Client();
 				flogprogress(23, 'Connecting to the gateway for posting the key');
+				conn.on('error', (error) => {
+					console.log(error);
+					reject("Unable to connect : invalid login and/or password");
+				});
 				conn.on('ready', () => {
 					conn.exec(cmd, (err, stream) => {
 						if(err) reject(err);
@@ -224,8 +228,7 @@ async function sshconnect(login, gateway,
 					} catch(err) {
 						  console.error(err)
 					}				
-					flogprogress(25, err);
-					throw `Error in the pipeline of key generation : ${err}`;
+					throw err;
 				});
 		}
 		else { // otherwise propagate the exception

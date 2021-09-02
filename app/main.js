@@ -147,10 +147,12 @@ ipcMain.on("connect", (event, args) => {
 		})
 		.then(refresh_sessions)
 		.catch(error => {
-			console.log(`Error : '${error}'`);
+			// console.log(`Error : '${error}'`);
 			if(error == "TypeError: Cannot read property 'getPrivatePEM' of undefined") {
 				logfailure("Cannot open your private key. Did you type in the correct password ?", error);
 			}
+			else 
+				logfailure(error);
 			connection_status = "failed";
 			mainWindow.webContents.send("connection-status", connection_status);
 		});
