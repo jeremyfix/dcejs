@@ -29,5 +29,6 @@ window.addEventListener('close', (event) => {
 });
 
 window.api.receive('set-question', (event, arg) => {
-	document.getElementById('question').innerHTML = arg;
+	document.getElementById('text').innerHTML = arg.text;
+	document.getElementById('question').innerHTML = arg.question;
 });

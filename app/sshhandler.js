@@ -35,9 +35,10 @@ function set_password_asker(myfun) {
 	password_asker = myfun;
 }
 
-function console_password_asker(question) {
+function console_password_asker(longtext, question) {
 	// Build the promise so that the question is asked with clear stdout
 	p = new Promise((resolve, reject) => {
+		rl.write(longtext + "\n");
 		rl.write(question + "\n");
 		rl.stdoutMuted = true;
 		rl.question("", (mypassphrase) => {
@@ -53,7 +54,7 @@ function console_password_asker(question) {
  * Function to generate a ssh key
  */
 async function generateKey(privatekey_path, comment) {
-	let keypassphrase = await password_asker("Type a passphrase for your key (you must remember it!) : ");
+	let keypassphrase = await password_asker("We are going to generate a SSH key for your future authentication. For this key, I need you define a password. This is a password you are free to define but you must remember it. Indeed, the next time you will start the application, the connection will ask you for that passphrase.", "Passphrase for your key (you must remember it!) : ");
 
 	return new Promise((resolve, reject) => {
 

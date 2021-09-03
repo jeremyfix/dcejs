@@ -114,7 +114,7 @@ app.on('ready', function() {
 
 	passwindow = new BrowserWindow({
 		width: 450,
-		height: 300,
+		height: 350,
 		parent: mainWindow,
 		resizable: false,
 		alwaysOnTop: true,
@@ -643,10 +643,13 @@ ipcMain.on("disconnect", (event, args) => {
 		});
 });
 
-function request_password(question) {
+function request_password(longtext, question) {
 	passwindow.show();
 	// passwindow.webContents.openDevTools();
-	passwindow.webContents.send('set-question', question);
+	passwindow.webContents.send('set-question', { 
+		text: longtext,
+		question: question
+	});
 
 	return new Promise((resolve, reject) => {
 		ipcMain.on("password", (event, args) => {
