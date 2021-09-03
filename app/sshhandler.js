@@ -54,7 +54,7 @@ function console_password_asker(longtext, question) {
  * Function to generate a ssh key
  */
 async function generateKey(privatekey_path, comment) {
-	let keypassphrase = await password_asker("We are going to generate a SSH key for your future authentication. For this key, I need you define a password. This is a password you are free to define but you must remember it. Indeed, the next time you will start the application, the connection will ask you for that passphrase.", "Passphrase for your key (you must remember it!) : ");
+	let keypassphrase = await password_asker("We are going to generate a SSH key for your future authentication. For this key, I need you define a password. This is a password you are free to define but you must remember it. Indeed, the next time you will start the application, the connection will ask you for that passphrase.", "Passphrase for your key (you must remember it!): ");
 
 	return new Promise((resolve, reject) => {
 
@@ -105,7 +105,7 @@ async function postKey(privatekey_path,
 			flogprogress(22, 'Asking for the gateway password');
 			cmd = "echo \"" + data.trim() + "\" >> ~/.ssh/authorized_keys";
 
-			return password_asker(`Provide the password for ${login}@${gateway} : `);
+			return password_asker(`For posting the ssh-key, I need you to type in the password for ${login}@${gateway} : `, 'Password :');
 		})
 		.then((sshpassword) => {
 
@@ -242,7 +242,7 @@ async function sshconnect(login, gateway,
 
 	if(key_passphrase == null) {
 		// We need to ask for the passphrase
-		key_passphrase = await password_asker("Type in your ssh-key passphrase : ");
+		key_passphrase = await password_asker("We need to unlock you sshkey. Please provide the ssh-key passphrase you defined at the first connection.", "SSH-key passphrase : ");
 	}
 
 	flogprogress(30, "Reading the private SSH key.");

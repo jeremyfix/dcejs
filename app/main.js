@@ -112,27 +112,6 @@ app.on('ready', function() {
 		passwindow = null;
 	});
 
-	passwindow = new BrowserWindow({
-		width: 450,
-		height: 350,
-		parent: mainWindow,
-		resizable: false,
-		alwaysOnTop: true,
-		closable: false,
-		modal: true,
-		show: false,
-		webPreferences: {
-			preload: path.join(__dirname, "preload.js")
-		}
-	});
-	passwindow.setMenu(null);
-	passwindow.loadURL(
-		url.format({
-			pathname: path.join(__dirname, 'password_query.html'),
-			protocol: 'file',
-			slashed: true
-		})
-	);
 });
 
 // Quit when all windows are closed.
@@ -643,18 +622,58 @@ ipcMain.on("disconnect", (event, args) => {
 		});
 });
 
+function createPassWindow() {
+	passwindow = new BrowserWindow({
+		width: 450,
+		height: 350,
+		parent: mainWindow,
+		resizable: false,
+		alwaysOnTop: true,
+		closable: false,
+		modal: true,
+		show: false,
+		webPreferences: {
+			preload: path.join(__dirname, "preload.js")
+		}
+	});
+	passwindow.setMenu(null);
+	passwindow.loadURL(
+		url.format({
+			pathname: path.join(__dirname, 'password_query.html'),
+			protocol: 'file',
+			slashed: true
+		})
+	);
+
+	passwindow.on('close', () => {
+		passwindow = null;
+		connection_status = "failed";
+		logfailure("Operation canceled");
+		mainWindow.webContents.send("connection-status", connection_status);
+	});
+}
+
 function request_password(longtext, question) {
+	console.log(`Request password with ${longtext} ${question}`);
+	if(passwindow == null) {
+		console.log("Creating the window");
+		createPassWindow();
+	}
 	passwindow.show();
 	// passwindow.webContents.openDevTools();
-	passwindow.webContents.send('set-question', { 
-		text: longtext,
-		question: question
+	passwindow.webContents.once('did-finish-load', () => {
+		passwindow.webContents.send('set-question', { 
+			text: longtext,
+			question: question
+		});
 	});
-
 	return new Promise((resolve, reject) => {
 		ipcMain.on("password", (event, args) => {
 			resolve(args);	
-			passwindow.hide();
+			// Question: why is that necessary ?
+			// sometimes we get the window closed sometimes not...
+			if(passwindow != null) 
+				passwindow.close();
 		})
 	});
 }
