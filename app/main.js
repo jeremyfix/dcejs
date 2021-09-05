@@ -649,6 +649,7 @@ function createPassWindow() {
 		passwindow = null;
 		connection_status = "failed";
 		logfailure("Operation canceled");
+		console.log("closing passwindow");
 		mainWindow.webContents.send("connection-status", connection_status);
 	});
 }
@@ -669,7 +670,12 @@ function request_password(longtext, question) {
 	passwindow.show();
 	return new Promise((resolve, reject) => {
 		ipcMain.on("password", (event, args) => {
-			passwindow.close();
+			passwindow.hide();
+			// We delete rather than passwindow.close() to distinguish
+			// our closing vs manual closing by the user
+			// If the user closes the window, we reactivate the login 
+			// form otherwise we do not
+			delete passwindow;
 			resolve(args);	
 		})
 	});
