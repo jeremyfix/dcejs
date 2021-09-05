@@ -35,7 +35,12 @@
 						<label for="walltime">Walltime (HH:MM)</label>
 						<input type="text" id="walltime" required>
 						<label class="error" id="error"></label>
-						<button id="validateBtn">Validate</button>
+						<button class="collapsible" type="button" "advancedBtn">Advanced settings</button>
+						<div class="advancedsettings">
+							<label for="exclusive">Exclusive</label>
+							<input type="checkbox" id="exclusive">
+						</div>
+						<button id="validateBtn" class="validate">Validate</button>
 					</form>
 				</div>
 
@@ -45,7 +50,7 @@
 						<label for="reservation">Reservation</label>
 						<input type="text" id="reservation" required autofocus>
 						<label class="error" id="errorresa"></label>
-						<button id="validateResaBtn">Validate</button>
+						<button id="validateResaBtn" class="validate">Validate</button>
 					</form>
 				</div>
 

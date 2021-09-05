@@ -81,6 +81,24 @@ window.addEventListener('DOMContentLoaded', () => {
 	tablinks.forEach(elem => elem.addEventListener('click', showTab, false));
 
 	document.getElementById("defaultOpen").click();
+
+	// Default check the exclusive checkbox
+	document.getElementById("exclusive").checked = true;
+
+	//TODO, add -n 32 etc.. available only if the checkbox is not checked
+	let collapsibles = document.getElementsByClassName("collapsible");
+	for(let elem of collapsibles) {
+		elem.addEventListener("click", function () {
+			this.classList.toggle("active");
+			console.log("clicked");
+			let content = this.nextElementSibling;
+			console.log(content);
+			if(content.style.maxHeight)
+				content.style.maxHeight = null;
+			else
+				content.style.maxHeight = content.scrollHeight + "px";
+		});
+	}
 });
 
 function showTab(evt) {
