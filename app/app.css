@@ -214,6 +214,53 @@ div.sessionsbuttons > button {
 	padding: 6px 12px;
 }
 
+.tabcontent .collapsible {
+	grid-column-start: 1;
+	grid-column-end: 3;
+	color: black;
+	cursor: pointer;
+	padding: 18px;
+	width: 100%;
+	border: none;
+	text-align: left;
+	outline: none;
+}
+
+.tabcontent .collapsible:after {
+  content: '\002B';
+  color: black;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+.tabcontent .active:after {
+  content: '\2212';
+}
+.tabcontent button.validate {
+	grid-column-start: 1;
+	grid-column-end: 3;
+}
+
+.advancedsettings {
+	display: grid;
+	grid-column: 1/2;
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.2s ease-out;
+	background-color: #f1f1f1;
+}
+
+.advancedsettings select,input,button {
+	width: 100%;
+	padding-top: 0.7em;
+	padding-bottom: 0.7em;
+	margin-bottom: 0.5rem;
+	grid-column: 2/2;
+	margin-bottom: 1rem;
+	background: #fff;
+	border: 1px solid #9c9c9c;
+}
+
 select {
 	width: 100%;
 }
