@@ -655,25 +655,22 @@ function createPassWindow() {
 
 function request_password(longtext, question) {
 	console.log(`Request password with ${longtext} ${question}`);
-	if(passwindow == null) {
-		console.log("Creating the window");
-		createPassWindow();
-	}
-	passwindow.show();
+
+	createPassWindow();
 	// passwindow.webContents.openDevTools();
+
 	passwindow.webContents.once('did-finish-load', () => {
 		passwindow.webContents.send('set-question', { 
 			text: longtext,
 			question: question
 		});
 	});
+
+	passwindow.show();
 	return new Promise((resolve, reject) => {
 		ipcMain.on("password", (event, args) => {
+			passwindow.close();
 			resolve(args);	
-			// Question: why is that necessary ?
-			// sometimes we get the window closed sometimes not...
-			if(passwindow != null) 
-				passwindow.close();
 		})
 	});
 }

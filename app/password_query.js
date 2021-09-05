@@ -1,5 +1,7 @@
 
-function sendpass() {
+function sendpass(event) {
+	event.preventDefault();
+
 	let password = document.getElementById('password');
 	console.log("Send pass");
 	window.api.send('password', password.value);
