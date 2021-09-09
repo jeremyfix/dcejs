@@ -14,7 +14,7 @@ On all the OS, you can check this works by ensuring you can execute the command 
 
 If you want to use VNC, you should also install the [tigerVNC client](https://sourceforge.net/projects/tigervnc/files/).
 
-If you want to use NoMachine, you should also install the [NoMachine client](www.nomachine.com)
+If you want to use NoMachine, you should also install the [NoMachine client](http://www.nomachine.com)
 
 ## Installing
 
