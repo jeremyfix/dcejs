@@ -118,8 +118,10 @@ function find_vncviewer() {
 					if(elem.string[0].match(/^TigerVNC/g)) 
 						pathtoprog = elem.string[4];
 				});
-				if(pathtoprog == null)
+				if(pathtoprog == null) {
 					reject('VNCViewer not available');
+					return;
+				}
 
 				pathtoprog = pathtoprog.replace(/\s/g, ' \\');
 				pathtoprog = path.join(pathtoprog, 'Contents', 'MacOS', 'TigerVNC\\ Viewer');
