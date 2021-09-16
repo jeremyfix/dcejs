@@ -31,7 +31,16 @@ function check_and_create(event) {
 	let partition_name = partition_fields[0];
 	let maxtime = partition_fields[1];
 	let maxtime_fields = maxtime.split(":");
-	let maxtime_hh = parseFloat(maxtime_fields[0]);
+	let maxtime_ddhh = maxtime_fields[0].split('-');
+	let maxtime_hh = 0;
+	if (maxtime_ddhh.length == 1) {
+		// We did have only hours
+		maxtime_hh = parseFloat(maxtime_ddhh[0]);
+	}
+	if (maxtime_ddhh.length == 2) {
+		// We add some days in front
+		maxtime_hh = parseFloat(maxtime_ddhh[0])*24 + parseFloat(maxtime_ddhh[1]);
+	}
 	let maxtime_mm = parseFloat(maxtime_fields[1]);
 
 	let regex_walltime = /^\d+:\d+$/;
