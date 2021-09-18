@@ -16,6 +16,8 @@ If you want to use VNC, you should also install the [tigerVNC client](https://so
 
 If you want to use NoMachine, you should also install the [NoMachine client](http://www.nomachine.com)
 
+If you want to start X11 application, on Windows, you can install [XMin](https://sourceforge.net/projects/xming/).
+
 ## Installing
 
 To install the app for your OS, please select the appropriate runnable from the releases on the [Release page](https://github.com/jeremyfix/dcejs/releases).
