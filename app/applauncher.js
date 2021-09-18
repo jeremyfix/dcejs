@@ -11,7 +11,7 @@ function launchx() {
 	window.api.send("startx", {
 		jobid: jobid,
 		// app: "VGL_DISPLAY=:10 vglrun glxgears"
-		app: 'xeyes'
+		app: 'xterm'
 	});
 }
 

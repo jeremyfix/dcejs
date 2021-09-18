@@ -355,7 +355,10 @@ function connect_x11_node(jobid, node) {
 		// connects to localhost:0.0
 		//TODO: this is specific to Linux, 
 		//and to the case X11 is connected via a Unix socket
-		xserversock.connect('/tmp/.X11-unix/X0');
+		if(process.platform == 'linux') 
+			xserversock.connect('/tmp/.X11-unix/X0');
+		else
+			xserversock.connect(6000, 'localhost');
 	});
 
 	let nodeparams = {
