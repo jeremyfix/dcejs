@@ -16,7 +16,9 @@ If you want to use VNC, you should also install the [tigerVNC client](https://so
 
 If you want to use NoMachine, you should also install the [NoMachine client](http://www.nomachine.com)
 
-If you want to start X11 application, on Windows, you can install [XMin](https://sourceforge.net/projects/xming/).
+If you want to start X11 application, on Windows, you can install [XMing](https://sourceforge.net/projects/xming/).
+
+If you want to start X11 application, on MacOS, you can install XQuartz. In addition, you must allow local network connections in the settings of XQuartz. Finally, you must run `xhost +` in a terminal before running a X11 application with dcejs.
 
 ## Installing
 
