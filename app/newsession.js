@@ -16,6 +16,10 @@ function check_and_create_resa(event) {
 	});
 }
 
+function isNumber(n) {
+	  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 function check_and_create(event) {
 	event.preventDefault();
 	let partition = document.getElementById("partitions");
@@ -57,11 +61,45 @@ function check_and_create(event) {
 		return;
 	}
 
-	window.api.send("request-new-session", {
+	let advanced = document.getElementById("advanced_noresa").checked;
+	let cpuspertask = document.getElementById("noresa_cpuspertask");
+	let value_cpuspertask = null;
+	let minnodes = document.getElementById("noresa_minnodes");
+	let value_minnodes = null;
+	if(advanced) {
+
+		if(cpuspertask.value === "") {
+			label_error.innerHTML = `With advanced settings, --cpus-per-task cannot be empty`;
+			return;
+		}
+		if(!isNumber(cpuspertask.value)) {
+			label_error.innerHTML = '--cpus-per-task must be an integer';
+			return;
+		}
+		value_cpuspertask = parseInt(cpuspertask.value);
+
+		if(minnodes.value === "") {
+			label_error.innerHTML = `With advanced settings, --nodes cannot be empty`;
+			return;
+		}
+		if(!isNumber(minnodes.value)) {
+			label_error.innerHTML = '--nodes must be an integer';
+			return;
+		}
+		value_minnodes = parseInt(minnodes.value);
+	}
+	
+	let options = {
 		partition: partition_name,
 		reservation: null,
-		walltime: walltime+':00'  // Append the seconds
-	});
+		walltime: walltime+':00',  // Append the seconds
+		advanced: advanced,
+		minnodes: value_minnodes,
+		cpuspertask: value_cpuspertask
+	};
+
+	console.log(options);
+	// window.api.send("request-new-session", options);
 }
 
 window.api.receive("partition-list", (event, arg) => {
