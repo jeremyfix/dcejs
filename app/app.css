@@ -242,12 +242,16 @@ div.sessionsbuttons > button {
 }
 
 .advancedsettings {
-	display: grid;
-	grid-column: 1/2;
 	max-height: 0;
-	overflow: hidden;
 	transition: max-height 0.2s ease-out;
 	background-color: #f1f1f1;
+	overflow: hidden;
+	display: grid;
+	grid-column-start: 1;
+	grid-column-end: 3;
+}
+.advancedsettings label {
+	grid-column: 1/2;
 }
 
 .advancedsettings select,input,button {
@@ -255,11 +259,17 @@ div.sessionsbuttons > button {
 	padding-top: 0.7em;
 	padding-bottom: 0.7em;
 	margin-bottom: 0.5rem;
-	grid-column: 2/2;
 	margin-bottom: 1rem;
+	margin-right: 1rem;
 	background: #fff;
 	border: 1px solid #9c9c9c;
+	grid-column: 2/2;
 }
+input.advancedcheck {
+	display:none;
+	visibility: hidden;
+}
+
 
 select {
 	width: 100%;

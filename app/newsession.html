@@ -35,7 +35,8 @@
 						<label for="walltime">Walltime (HH:MM)</label>
 						<input type="text" id="walltime" required>
 						<label class="error" id="error"></label>
-						<button class="collapsible" type="button" "advancedBtn">Advanced settings</button>
+						<button class="collapsible" type="button">Advanced settings</button>
+						<input type="checkbox" class="advancedcheck" id="advanced_noresa">
 						<div class="advancedsettings">
 							<label for="cpuspertask">-c, --cpus-per-task</label>
 							<input type="text" id="cpuspertask">
@@ -52,6 +53,14 @@
 						<label for="reservation">Reservation</label>
 						<input type="text" id="reservation" required autofocus>
 						<label class="error" id="errorresa"></label>
+						<button class="collapsible" type="button">Advanced settings</button>
+						<input type="checkbox" class="advancedcheck" id="advanced_resa">
+						<div class="advancedsettings">
+							<label for="cpuspertask">-c, --cpus-per-task</label>
+							<input type="text" id="cpuspertask">
+							<label for="minnodes">-N, --nodes</label>
+							<input type="text" id="minnodes">
+						</div>
 						<button id="validateResaBtn" class="validate">Validate</button>
 					</form>
 				</div>

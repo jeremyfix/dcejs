@@ -91,21 +91,20 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	document.getElementById("defaultOpen").click();
 
-	// Default check the exclusive checkbox
-	document.getElementById("exclusive").checked = true;
-
-	//TODO, add -n 32 etc.. available only if the checkbox is not checked
 	let collapsibles = document.getElementsByClassName("collapsible");
 	for(let elem of collapsibles) {
 		elem.addEventListener("click", function () {
 			this.classList.toggle("active");
-			console.log("clicked");
-			let content = this.nextElementSibling;
-			console.log(content);
-			if(content.style.maxHeight)
+			let checkbox = this.nextElementSibling;
+			let content = checkbox.nextElementSibling;
+			if(content.style.maxHeight) {
+				checkbox.checked = false;
 				content.style.maxHeight = null;
-			else
+			}
+			else {
+				checkbox.checked = true;
 				content.style.maxHeight = content.scrollHeight + "px";
+			}
 		});
 	}
 });

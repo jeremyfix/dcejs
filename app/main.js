@@ -196,7 +196,7 @@ function createNewSessionWindow() {
 		width: 500,
 		height: 500,
 		parent: mainWindow,
-		resizable: false,
+		resizable: true,
 		alwaysOnTop: true,
 		closable: true,
 		modal: true,
@@ -205,7 +205,7 @@ function createNewSessionWindow() {
 			preload: path.join(__dirname, "preload.js")
 		}
 	});
-	// newsessionwindow.webContents.openDevTools();
+	newsessionwindow.webContents.openDevTools();
 	newsessionwindow.setMenu(null);
 	newsessionwindow.loadURL(
 		url.format({
