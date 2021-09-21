@@ -9,11 +9,49 @@ function check_and_create_resa(event) {
 		return;
 	}
 
-	window.api.send("request-new-session", {
+	let advanced = document.getElementById("advanced_resa").checked;
+	let cpuspertask = document.getElementById("resa_cpuspertask");
+	let value_cpuspertask = null;
+	let minnodes = document.getElementById("resa_minnodes");
+	let value_minnodes = null;
+	let qos = document.getElementById("resa_qos");
+	let value_qos = null;
+	if(advanced) {
+
+		if(cpuspertask.value === "") {
+			label_error.innerHTML = `With advanced settings, --cpus-per-task cannot be empty`;
+			return;
+		}
+		if(!isNumber(cpuspertask.value)) {
+			label_error.innerHTML = '--cpus-per-task must be an integer';
+			return;
+		}
+		value_cpuspertask = parseInt(cpuspertask.value);
+
+		if(minnodes.value === "") {
+			label_error.innerHTML = `With advanced settings, --nodes cannot be empty`;
+			return;
+		}
+		if(!isNumber(minnodes.value)) {
+			label_error.innerHTML = '--nodes must be an integer';
+			return;
+		}
+		value_minnodes = parseInt(minnodes.value);
+
+		value_qos = qos.value;
+	}
+
+	let options = {
 		partition: null,
 		reservation: resacode,
-		walltime: null
-	});
+		walltime: null,
+		advanced: advanced,
+		minnodes: value_minnodes,
+		cpuspertask: value_cpuspertask,
+		qos: value_qos
+	};
+
+	window.api.send("request-new-session", options);
 }
 
 function isNumber(n) {
@@ -66,6 +104,8 @@ function check_and_create(event) {
 	let value_cpuspertask = null;
 	let minnodes = document.getElementById("noresa_minnodes");
 	let value_minnodes = null;
+	let qos = document.getElementById("noresa_qos");
+	let value_qos = null;
 	if(advanced) {
 
 		if(cpuspertask.value === "") {
@@ -87,6 +127,8 @@ function check_and_create(event) {
 			return;
 		}
 		value_minnodes = parseInt(minnodes.value);
+
+		value_qos = qos.value;
 	}
 	
 	let options = {
@@ -95,11 +137,12 @@ function check_and_create(event) {
 		walltime: walltime+':00',  // Append the seconds
 		advanced: advanced,
 		minnodes: value_minnodes,
-		cpuspertask: value_cpuspertask
+		cpuspertask: value_cpuspertask,
+		qos: value_qos
 	};
 
 	console.log(options);
-	// window.api.send("request-new-session", options);
+	window.api.send("request-new-session", options);
 }
 
 window.api.receive("partition-list", (event, arg) => {

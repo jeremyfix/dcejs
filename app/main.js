@@ -83,7 +83,7 @@ app.on('ready', function() {
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
 		width: 550, height: 750,
-		resizable: false,
+		resizable: true,
 		icon: path.join(app.getAppPath(), 'dce-coul.png'),
 		webPreferences: {
 			nodeIntegration: false,
@@ -205,7 +205,7 @@ function createNewSessionWindow() {
 			preload: path.join(__dirname, "preload.js")
 		}
 	});
-	newsessionwindow.webContents.openDevTools();
+	// newsessionwindow.webContents.openDevTools();
 	newsessionwindow.setMenu(null);
 	newsessionwindow.loadURL(
 		url.format({
@@ -315,14 +315,32 @@ ipcMain.on("request-new-session", async (event, args) => {
 		let partition = args.partition;
 		let walltime = args.walltime;
 		let resa = args.reservation;
+		let advanced = args.advanced;
+		let minnodes = args.minnodes;
+		let cpuspertask = args.cpuspertask;
+		let qos = args.qos;
 
 		let slurm_cmd;
-		if(resa == null) 
-			slurm_cmd =`'srun -N 1 --exclusive -p ${partition} -t ${walltime} --epilog="${screen_epilog}" --pty bash^M'`;
-		else
-			slurm_cmd=`'srun -N 1 --exclusive --reservation ${resa} --epilog="${screen_epilog}" --pty bash^M'`;
-		cmd = `screen -S ${screen.get_screen_name()} -X stuff ${slurm_cmd}`;
-		logprogress(50, `Allocating a node with srun`);
+		slurm_cmd = 'srun ';
+		if(advanced) {
+			slurm_cmd += `--nodes ${minnodes} --cpus-per-task ${cpuspertask} `;
+			if(qos != '')
+				slurm_cmd += `--qos ${qos} `;
+		}
+		else {
+			slurm_cmd += '-N 1 --exclusive ';
+		}
+
+		if(resa == null) {
+			slurm_cmd +=`-p ${partition} -t ${walltime} `;
+		}
+		else {
+			slurm_cmd +=`--reservation ${resa} `;
+		}
+		slurm_cmd += `--epilog="${screen_epilog}" --pty bash^M`;
+
+		cmd = `screen -S ${screen.get_screen_name()} -X stuff '${slurm_cmd}'`;
+		logprogress(50, `Allocating a node with srun ${cmd}`);
 		await sshhandler.execute_on_frontal(cmd);
 
 		// Save the SLURM_JOBID in ~/.cscluster/resa-screen_pid.log
@@ -588,6 +606,8 @@ function logprogress(progress, msg, consolemsg=null) {
 	sendprogress(progress, "success");
 	if(consolemsg != null) 
 		console.log(consolemsg);
+	else
+		console.log(msg);
 }
 
 function sendlog(log) {

@@ -80,7 +80,15 @@ window.api.receive("refresh-sessions", (event, arg) => {
 	const startappcls_vnc = ((platform == 'linux') || (platform == 'darwin')) ? 'startapp' : '';
 	const startappcls_nomachine = ((platform == 'linux') || (platform == 'darwin')) ? 'startapp' : '';
 	arg.sessions.forEach(elem => {
-		const firstnode = elem.nodelist.split(",")[0];
+		let firstnode = elem.nodelist;
+		if(/^\w*\[\d*-\d*\]$/.test(firstnode)) {
+			// We have a group of node, we extract the first node
+			const elems = firstnode.split(/(\w+)\[(\d+)-(\d+)\]/);
+			// For some reasons, this outputs :
+			// [ '', 'kyle', '01', '04', ''  ]
+			// for "kyle[01-04]".split(/(\w+)\[(\d+)-(\d+)\]/)
+			firstnode = elems[1] + elems[2];
+		}
 		newbody += `<tr class="trjobids" id="${elem.jobid},${firstnode}">`;
 		newbody += `<td>${elem.jobid}</td>`;
 		newbody += `<td>${elem.partition}</td>`;

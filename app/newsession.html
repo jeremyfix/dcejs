@@ -39,9 +39,11 @@
 						<input type="checkbox" class="advancedcheck" id="advanced_noresa">
 						<div class="advancedsettings">
 							<label for="noresa_cpuspertask">-c, --cpus-per-task</label>
-							<input type="text" id="noresa_cpuspertask">
+							<input type="text" id="noresa_cpuspertask" value="2">
 							<label for="noresa_minnodes">-N, --nodes</label>
-							<input type="text" id="noresa_minnodes">
+							<input type="text" id="noresa_minnodes" value="1">
+							<label for="noresa_qos">--qos</label>
+							<input type="text" id="noresa_qos" value="max8">
 						</div>
 						<button id="validateBtn" class="validate">Validate</button>
 					</form>
@@ -57,9 +59,11 @@
 						<input type="checkbox" class="advancedcheck" id="advanced_resa">
 						<div class="advancedsettings">
 							<label for="resa_cpuspertask">-c, --cpus-per-task</label>
-							<input type="text" id="resa_cpuspertask">
+							<input type="text" id="resa_cpuspertask" value="2">
 							<label for="resa_minnodes">-N, --nodes</label>
-							<input type="text" id="resa_minnodes">
+							<input type="text" id="resa_minnodes" value="1">
+							<label for="resa_qos">--qos</label>
+							<input type="text" id="resa_qos" value="max8">
 						</div>
 						<button id="validateResaBtn" class="validate">Validate</button>
 					</form>
