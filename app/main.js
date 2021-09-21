@@ -438,9 +438,10 @@ ipcMain.on("kill", async (event, arg) => {
 });
 
 ipcMain.on("startx", (event, arg) => {
+	appwindow.close();
 	const jobid = arg.jobid;
 	const application = arg.app;
-	console.log("Running startx");
+	console.log(`Running ${application}`);
 	sshhandler.execute_x11_node(jobid, application);
 });
 
