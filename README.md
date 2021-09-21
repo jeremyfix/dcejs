@@ -36,3 +36,9 @@ If you just want to test and run the app and have a Node installation, you just 
 	yarn
 	yarn start
 
+## Troubleshootings
+
+### Minimum ssh-keygen passphrase length
+
+On some windows platforms, users reported they need to provide a ssh-key passphrase containing at least 5 characters.
+
