@@ -229,6 +229,9 @@ ipcMain.on("show-new-session", async (event, args) => {
 	partitions = partitions.split("\n");
 	let partition_list = [];
 	partitions.forEach(elem => {
+		if(elem != "") {
+		console.log(`"${elem}"`);
+		console.log(typeof(elem));
 		const partition_fields = elem.split(" ");
 		let maxtime_fields = partition_fields[1].split(':'); 
 		// Remove the seconds from HH:MM:SS or DD-HH:MM:SS
@@ -239,7 +242,8 @@ ipcMain.on("show-new-session", async (event, args) => {
 			maxtime: maxtime,
 			nodes: partition_fields[2]
 		});
-	});
+			
+	}});
 
 	// Open the window to ask for the parameters of the session
 	createNewSessionWindow();
