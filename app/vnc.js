@@ -74,7 +74,7 @@ function get_ports(jobid, attempts=2) {
 // Returns a Promise
 function start(jobid) {
 	// Check if the file Xstartup exists on the remote, otherwise create one
-	let cmd = "if [ -f ~/.vnc/xstartup ]; then echo 0; else echo 1; fi";
+	let cmd = "if [ ! -f ~/.vnc/xstartup ]; then if [ -f /etc/vnc/xstartup ]; then mkdir -p ~/.vnc; ln -s /etc/vnc/xstartup ~/.vnc/xstartup; echo 0; else echo 1; fi; else echo 0; fi";
 	return screen.run_in_screen(cmd, jobid)
 		.then(stds => {
 			if(stds.stdout == "0") {
