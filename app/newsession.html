@@ -35,7 +35,7 @@
 						<label for="walltime">Walltime (HH:MM)</label>
 						<input type="text" id="walltime" required>
 						<label class="error" id="error"></label>
-						<button class="collapsible" type="button">Advanced settings</button>
+						<button class="collapsible" type="button" id='noresa'>Advanced settings</button>
 						<input type="checkbox" class="advancedcheck" id="advanced_noresa">
 						<div class="advancedsettings">
 							<label for="noresa_exclusive">exclusive</label>
@@ -46,9 +46,9 @@
 							<input type="text" id="noresa_minnodes" value="1">
 							<label for="noresa_qos">--qos</label>
 							<input type="text" id="noresa_qos" value="normal">
-							<label for="noresa_slurm_cmd">Slurm command : </label>
-							<input type="text" readonly id="noresa_slurm_cmd">
 						</div>
+						<label for="noresa_slurm_cmd">Slurm command : </label>
+						<input type="text" readonly id="noresa_slurm_cmd">
 						<button id="validateBtn" class="validate">Validate</button>
 					</form>
 				</div>
@@ -59,7 +59,7 @@
 						<label for="reservation">Reservation</label>
 						<input type="text" id="reservation" required autofocus>
 						<label class="error" id="errorresa"></label>
-						<button class="collapsible" type="button">Advanced settings</button>
+						<button class="collapsible" type="button" id="resa">Advanced settings</button>
 						<input type="checkbox" class="advancedcheck" id="advanced_resa">
 						<div class="advancedsettings">
 							<label for="resa_exclusive">exclusive</label>
@@ -70,9 +70,9 @@
 							<input type="text" id="resa_minnodes" value="1">
 							<label for="resa_qos">--qos</label>
 							<input type="text" id="resa_qos" value="normal">
-							<label for="resa_slurm_cmd">Slurm command : </label>
-							<input type="text" readonly id="resa_slurm_cmd">
 						</div>
+						<label for="resa_slurm_cmd">Slurm command : </label>
+						<input type="text" readonly id="resa_slurm_cmd">
 						<button id="validateResaBtn" class="validate">Validate</button>
 					</form>
 				</div>

@@ -63,7 +63,10 @@ window.addEventListener('DOMContentLoaded', () => {
 				checkbox.checked = true;
 				content.style.maxHeight = content.scrollHeight + "px";
 			}
-		});
+			let options = get_options(elem.id);
+			if(options != null) 
+				window.api.send("get-slurm-cmd", options);
+			});
 	}
 
 	// Add change event detector to update the slurm command

@@ -388,7 +388,6 @@ ipcMain.on("request-new-session", async (event, args) => {
 });
 
 ipcMain.on("get-slurm-cmd", async (event, options) => {
-	console.log(event);
 	console.log(options);
 	newsessionwindow.webContents.send("slurm-cmd", 
 		{
