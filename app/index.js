@@ -102,7 +102,7 @@ window.api.receive("refresh-sessions", (event, arg) => {
 			newbody += `<td class="${startappcls_nomachine}" id="nomachine">localhost:${elem.nomachine}</td>`;
 		else
 			newbody += `<td>--</td>`;
-		newbody += `<td><button class="appstart" id="${elem.jobid},${firstnode}"><span class="apps">&#9881;</span>Apps</button></td>`;
+		newbody += `<td><button class="appstart" id="${elem.jobid},${firstnode}"><span class="apps">&#9881;</span>Actions</button></td>`;
 		newbody += "</tr>";
 	});
 	let table = document.getElementById("table-sessions");
