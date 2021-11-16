@@ -38,12 +38,16 @@
 						<button class="collapsible" type="button">Advanced settings</button>
 						<input type="checkbox" class="advancedcheck" id="advanced_noresa">
 						<div class="advancedsettings">
+							<label for="noresa_exclusive">exclusive</label>
+							<input type="checkbox" id="noresa_exclusive" checked>
 							<label for="noresa_cpuspertask">-c, --cpus-per-task</label>
 							<input type="text" id="noresa_cpuspertask" value="2">
 							<label for="noresa_minnodes">-N, --nodes</label>
 							<input type="text" id="noresa_minnodes" value="1">
 							<label for="noresa_qos">--qos</label>
 							<input type="text" id="noresa_qos" value="normal">
+							<label for="noresa_slurm_cmd">Slurm command : </label>
+							<input type="text" readonly id="noresa_slurm_cmd">
 						</div>
 						<button id="validateBtn" class="validate">Validate</button>
 					</form>
@@ -58,12 +62,16 @@
 						<button class="collapsible" type="button">Advanced settings</button>
 						<input type="checkbox" class="advancedcheck" id="advanced_resa">
 						<div class="advancedsettings">
+							<label for="resa_exclusive">exclusive</label>
+							<input type="checkbox" id="resa_exclusive" checked>
 							<label for="resa_cpuspertask">-c, --cpus-per-task</label>
 							<input type="text" id="resa_cpuspertask" value="2">
 							<label for="resa_minnodes">-N, --nodes</label>
 							<input type="text" id="resa_minnodes" value="1">
 							<label for="resa_qos">--qos</label>
 							<input type="text" id="resa_qos" value="normal">
+							<label for="resa_slurm_cmd">Slurm command : </label>
+							<input type="text" readonly id="resa_slurm_cmd">
 						</div>
 						<button id="validateResaBtn" class="validate">Validate</button>
 					</form>

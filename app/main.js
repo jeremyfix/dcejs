@@ -324,24 +324,8 @@ ipcMain.on("request-new-session", async (event, args) => {
 		let cpuspertask = args.cpuspertask;
 		let qos = args.qos;
 
-		let slurm_cmd;
-		slurm_cmd = 'srun ';
-		if(advanced) {
-			slurm_cmd += `--nodes ${minnodes} --cpus-per-task ${cpuspertask} `;
-			if(qos != '')
-				slurm_cmd += `--qos ${qos} `;
-		}
-		else {
-			slurm_cmd += '-N 1 --exclusive ';
-		}
-
-		if(resa == null) {
-			slurm_cmd +=`-p ${partition} -t ${walltime} `;
-		}
-		else {
-			slurm_cmd +=`--reservation ${resa} `;
-		}
-		slurm_cmd += `--epilog="${screen_epilog}" --pty bash^M`;
+		let slurm_cmd = slurm_requests.get_slurm_cmd(args, screen_epilog);
+		console.log(`slurm commande : ${slurm_cmd}`);
 
 		cmd = `screen -S ${screen.get_screen_name()} -X stuff '${slurm_cmd}'`;
 		logprogress(50, `Allocating a node with srun ${cmd}`);
@@ -402,6 +386,16 @@ ipcMain.on("request-new-session", async (event, args) => {
 		//TODO clean up and remove the possibly generated files
 	}
 });
+
+ipcMain.on("get-slurm-cmd", async (event, options) => {
+	console.log(event);
+	console.log(options);
+	newsessionwindow.webContents.send("slurm-cmd", 
+		{
+			mode: options.mode,
+			cmd: slurm_requests.get_slurm_cmd(options) 
+		});
+})
 
 ipcMain.on("show_app", (event, arg) => {
 	// When we show the apps, we create a x11 ssh connection to the first 

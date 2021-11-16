@@ -10,15 +10,14 @@ contextBridge.exposeInMainWorld(
 			let validChannels = [
 				"connect", "disconnect",
 				"password","connection-status", "req-app-version",
-				"refresh-sessions", "show-new-session", "request-new-session",
-				"kill", "startx", "show_app", "startvnc", "startnomachine", "start_app"
+				"refresh-sessions", "show-new-session", "request-new-session","get-slurm-cmd", "kill", "startx", "show_app", "startvnc", "startnomachine", "start_app"
 			];
 			if (validChannels.includes(channel)) 
 				ipcRenderer.send(channel, data);
 		},
 		receive: (channel, func) => {
 			let validChannels = ["connection-status", 
-				"set-question", "app-version", 
+				"set-question", "app-version", "slurm-cmd",
 				"refresh-sessions", "partition-list","jobinfo", "logger","progress"
 			];
 			if(validChannels.includes(channel))
