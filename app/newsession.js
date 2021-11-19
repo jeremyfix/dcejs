@@ -143,12 +143,12 @@ function get_options(mode) {
 
 		let regex_walltime = /^\d+:\d+$/;
 		if (!(regex_walltime.test(walltime))) {
-			label_error.innerHTML = `walltime ${walltime} matching failed, not hh:mm !`;
+			label_error.innerText = `walltime ${walltime} matching failed, not hh:mm !`;
 			return;
 		}
 		else { 
 			// Remove any previous displayed error
-			label_error.innerHTML = '';
+			label_error.innerText = '';
 		}
 
 		let walltime_fields = walltime.split(':');
@@ -156,7 +156,7 @@ function get_options(mode) {
 		let walltime_mm = parseFloat(walltime_fields[1]);
 
 		if ((walltime_hh > maxtime_hh) || ((walltime_hh == maxtime_hh) && walltime_mm > maxtime_mm)) {
-			label_error.innerHTML = `walltime ${walltime} exceeds maxtime ${maxtime}`;
+			label_error.innerText = `walltime ${walltime} exceeds maxtime ${maxtime}`;
 			return;
 		}
 
