@@ -227,7 +227,7 @@ async function sshconnect(login, gateway,
 						  fs.unlinkSync(valid_privatekey_path);
 						  fs.unlinkSync(valid_privatekey_path+'.pub');
 					} catch(err) {
-						  console.error(err)
+						console.error("Unable to delete the previous keys");
 					}				
 					throw err;
 				});
