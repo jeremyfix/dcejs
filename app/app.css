@@ -11,7 +11,7 @@ html, body, video {
 	  grid-area: hd;
 	  margin: 0.5em;
 }
-.sessions{
+.sessions {
 	  margin: 0.5em;
 	  grid-area: se;
 	  
@@ -53,16 +53,14 @@ div.version {
 }
 
 form {
-	width: 300px;
 	background: #f9f9f9;
 	border: 1px solid #c1c1c1;
 	margin: 1em;
-	max-width: 600px;
 	padding: 1em;
 	display: grid;
 	grid-column: 1/2;
 }
-form select,input,button {
+form select,input,button,textarea {
 	width: 100%;
 	padding-top: 0.7em;
 	padding-bottom: 0.7em;
