@@ -175,6 +175,8 @@ div.sessionsbuttons > button {
 .error {
   color: rgb(214, 39, 40);
   width: 100%;
+  grid-column-start: 1;
+  grid-column-end: 3;
 }
 
 /* Style the tab */
