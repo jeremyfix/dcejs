@@ -71,6 +71,15 @@ window.addEventListener('DOMContentLoaded', () => {
 	}
 
 	// Add change event detector to update the slurm command
+	document.getElementById('noresa_cpuspertask').addEventListener('change', event => {
+		if(document.getElementById('noresa_cpuspertask').value != "")
+			document.getElementById('noresa_ntasks').value = "";
+	});
+	document.getElementById('noresa_ntasks').addEventListener('change', event => {
+		if(document.getElementById('noresa_ntasks').value != "")
+			document.getElementById('noresa_cpuspertask').value = "";
+	});
+
 	let elements_id = ['walltime', 'partitions', 'noresa_exclusive', 'noresa_cpuspertask', 'noresa_minnodes', 'noresa_qos', 'noresa_ntasks'];
 	elements_id.forEach(item => {
 		document.getElementById(item).addEventListener('change', event => {
@@ -81,6 +90,14 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	});
 
+	document.getElementById('resa_cpuspertask').addEventListener('change', event => {
+		if(document.getElementById('resa_cpuspertask').value != "")
+			document.getElementById('resa_ntasks').value = "";
+	});
+	document.getElementById('resa_ntasks').addEventListener('change', event => {
+		if(document.getElementById('resa_ntasks').value != "")
+			document.getElementById('resa_cpuspertask').value = "";
+	});
 	elements_id = ['reservation', 'resa_exclusive', 'resa_cpuspertask', 'resa_minnodes', 'resa_qos', 'resa_ntasks'];
 	elements_id.forEach(item => {
 		document.getElementById(item).addEventListener('change', event => {
@@ -152,31 +169,54 @@ function get_options(mode) {
 		let value_minnodes = null;
 		let qos = document.getElementById("noresa_qos");
 		let value_qos = null;
+		let ntasks = document.getElementById("noresa_ntasks");
+		let value_ntasks = null;
+
+		if(exclusive.checked) { 
+			cpuspertask.value = "";
+			cpuspertask.readOnly = true;
+			console.log("Checked");
+		}
+		else{
+			cpuspertask.readOnly = false;
+			console.log("not Checked");
+		}
+
 		if(advanced) {
 
-			if(cpuspertask.value === "") {
-				label_error.innerHTML = `With advanced settings, --cpus-per-task cannot be empty`;
-				return;
+			if(cpuspertask.value != "") {
+				if(!isNumber(cpuspertask.value)) {
+					label_error.innerHTML = '-c must be an integer or empty';
+					return;
+				}
+				value_cpuspertask = parseInt(cpuspertask.value);
 			}
-			if(!isNumber(cpuspertask.value)) {
-				label_error.innerHTML = '--cpus-per-task must be an integer';
-				return;
-			}
-			value_cpuspertask = parseInt(cpuspertask.value);
 
-			if(minnodes.value === "") {
-				label_error.innerHTML = `With advanced settings, --nodes cannot be empty`;
+			if(ntasks.value != "") {
+				if(!isNumber(ntasks.value)) {
+					label_error.innerHTML = '-n must be an integer or empty';
+					return;
+				}
+				value_ntasks = parseInt(ntasks.value);
+			}
+
+			if(minnodes.value != "") {
+				if(!isNumber(minnodes.value)) {
+					label_error.innerHTML = '-N must be an integer';
+					return;
+				}
+			}
+			else {
+				label_error.innerHTML = '-N cannot be empty';
 				return;
 			}
-			if(!isNumber(minnodes.value)) {
-				label_error.innerHTML = '--nodes must be an integer';
-				return;
-			}
-			value_exclusive = noresa_exclusive.checked;
+			value_exclusive = exclusive.checked;
 			value_minnodes = parseInt(minnodes.value);
-			value_qos = qos.value;
+			if(qos.value != "")
+				value_qos = qos.value;
 		}
 		
+		label_error.innerHTML = '';
 		let options = {
 			mode: "noresa",
 			partition: partition_name,
@@ -186,7 +226,8 @@ function get_options(mode) {
 			exclusive: value_exclusive,
 			minnodes: value_minnodes,
 			cpuspertask: value_cpuspertask,
-			qos: value_qos
+			qos: value_qos,
+			ntasks: value_ntasks
 		};
 		return options;
 	}
@@ -208,31 +249,51 @@ function get_options(mode) {
 		let value_minnodes = null;
 		let qos = document.getElementById("resa_qos");
 		let value_qos = null;
+		let ntasks = document.getElementById("resa_ntasks");
+		let value_ntasks = null;
+
+		if(exclusive.checked) { 
+			cpuspertask.value = "";
+			cpuspertask.readonly = true;
+		}
+		else
+			cpuspertask.readonly = false;
+
 		if(advanced) {
 
-			if(cpuspertask.value === "") {
-				label_error.innerHTML = `With advanced settings, --cpus-per-task cannot be empty`;
-				return;
+			if(cpuspertask.value != "") {
+				if(!isNumber(cpuspertask.value)) {
+					label_error.innerHTML = '-c must be an integer or empty';
+					return;
+				}
+				value_cpuspertask = parseInt(cpuspertask.value);
 			}
-			if(!isNumber(cpuspertask.value)) {
-				label_error.innerHTML = '--cpus-per-task must be an integer';
-				return;
-			}
-			value_cpuspertask = parseInt(cpuspertask.value);
 
-			if(minnodes.value === "") {
-				label_error.innerHTML = `With advanced settings, --nodes cannot be empty`;
+			if(ntasks.value != "") {
+				if(!isNumber(ntasks.value)) {
+					label_error.innerHTML = '-n must be an integer or empty';
+					return;
+				}
+				value_ntasks = parseInt(ntasks.value);
+			}
+
+			if(minnodes.value != "") {
+				if(!isNumber(minnodes.value)) {
+					label_error.innerHTML = '--nodes must be an integer';
+					return;
+				}
+			}
+			else {
+				label_error.innerHTML = '-N cannot be empty';
 				return;
 			}
-			if(!isNumber(minnodes.value)) {
-				label_error.innerHTML = '--nodes must be an integer';
-				return;
-			}
-			value_exclusive = noresa_exclusive.checked;
+			value_exclusive = exclusive.checked;
 			value_minnodes = parseInt(minnodes.value);
-			value_qos = qos.value;
+			if(qos.value != "")
+				value_qos = qos.value;
 		}
 
+		label_error.innerHTML = '';
 		let options = {
 			mode: "resa",
 			partition: null,
@@ -242,7 +303,8 @@ function get_options(mode) {
 			exclusive: value_exclusive,
 			minnodes: value_minnodes,
 			cpuspertask: value_cpuspertask,
-			qos: value_qos
+			qos: value_qos,
+			ntasks: value_ntasks
 		};
 		return options;
 	}

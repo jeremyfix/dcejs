@@ -41,11 +41,13 @@
 							<label for="noresa_exclusive">exclusive</label>
 							<input type="checkbox" id="noresa_exclusive" checked>
 							<label for="noresa_cpuspertask">-c, --cpus-per-task</label>
-							<input type="text" id="noresa_cpuspertask" value="2">
+							<input type="text" id="noresa_cpuspertask" value="" readonly>
 							<label for="noresa_minnodes">-N, --nodes</label>
 							<input type="text" id="noresa_minnodes" value="1">
 							<label for="noresa_qos">--qos</label>
-							<input type="text" id="noresa_qos" value="normal">
+							<input type="text" id="noresa_qos" value="">
+							<label for="noresa_ntasks">-n, --ntasks</label>
+							<input type="text" id="noresa_ntasks" value="">
 						</div>
 						<label for="noresa_slurm_cmd">Slurm command : </label>
 						<textarea id="noresa_slurm_cmd" rows="7" readonly></textarea>
@@ -64,12 +66,14 @@
 						<div class="advancedsettings">
 							<label for="resa_exclusive">exclusive</label>
 							<input type="checkbox" id="resa_exclusive" checked>
-							<label for="resa_cpuspertask">-c, --cpus-per-task</label>
-							<input type="text" id="resa_cpuspertask" value="2">
+							<label for="resa_cpuspertask" readonly>-c, --cpus-per-task</label>
+							<input type="text" id="resa_cpuspertask" value="" readonly>
 							<label for="resa_minnodes">-N, --nodes</label>
 							<input type="text" id="resa_minnodes" value="1">
 							<label for="resa_qos">--qos</label>
-							<input type="text" id="resa_qos" value="normal">
+							<input type="text" id="resa_qos" value="">
+							<label for="resa_ntasks">-n, --ntasks</label>
+							<input type="text" id="resa_ntasks" value="">
 						</div>
 						<label for="resa_slurm_cmd">Slurm command : </label>
 						<textarea id="resa_slurm_cmd" rows="7" readonly></textarea>

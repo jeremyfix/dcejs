@@ -54,6 +54,8 @@ function get_slurm_cmd(options, epilogpath) {
 	let slurm_cmd;
 	slurm_cmd = 'srun ';
 
+	console.log(`Slurm options : ${options} , path : ${epilogpath}`);
+
 	if(options.minnodes != null)
 		slurm_cmd += `-N ${options.minnodes} `;
 	else
@@ -61,9 +63,11 @@ function get_slurm_cmd(options, epilogpath) {
 	if(options.qos != null)
 		slurm_cmd += `--qos ${options.qos} `;
 	if(options.cpuspertask != null) 
-		slurm_cmd += `--cpus-per-task ${options.cpuspertask} `;
+		slurm_cmd += `-c ${options.cpuspertask} `;
 	if(options.exclusive)
 		slurm_cmd += '--exclusive ';
+	if(options.ntasks != null) 
+		slurm_cmd += `-n ${options.ntasks} `;
 
 	if(options.reservation != null) 
 		slurm_cmd +=`--reservation ${options.reservation} `;
