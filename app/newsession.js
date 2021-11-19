@@ -64,9 +64,10 @@ window.addEventListener('DOMContentLoaded', () => {
 				content.style.maxHeight = content.scrollHeight + "px";
 			}
 			let options = get_options(elem.id);
+			toggle_validate_buttons(elem.id, options);
 			if(options != null) 
 				window.api.send("get-slurm-cmd", options);
-			});
+		});
 	}
 
 	// Add change event detector to update the slurm command
@@ -74,6 +75,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	elements_id.forEach(item => {
 		document.getElementById(item).addEventListener('change', event => {
 			let options = get_options("noresa");
+			toggle_validate_buttons("noresa", options);
 			if(options != null) 
 				window.api.send("get-slurm-cmd", options);
 		});
@@ -83,11 +85,19 @@ window.addEventListener('DOMContentLoaded', () => {
 	elements_id.forEach(item => {
 		document.getElementById(item).addEventListener('change', event => {
 			let options = get_options("resa");
+			toggle_validate_buttons("resa", options);
 			if(options != null)
 				window.api.send("get-slurm-cmd", options);
 		});
 	});
 });
+
+function toggle_validate_buttons(mode, options) {
+	if(mode == "resa") 
+		document.getElementById('validateResaBtn').disabled = (options == null);
+	else
+		document.getElementById('validateBtn').disabled = (options == null);
+}
 
 function get_options(mode) {
 	if(mode == 'noresa') {
