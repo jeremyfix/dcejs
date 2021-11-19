@@ -71,7 +71,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	}
 
 	// Add change event detector to update the slurm command
-	let elements_id = ['walltime', 'partitions', 'noresa_exclusive', 'noresa_cpuspertask', 'noresa_minnodes', 'noresa_qos'];
+	let elements_id = ['walltime', 'partitions', 'noresa_exclusive', 'noresa_cpuspertask', 'noresa_minnodes', 'noresa_qos', 'noresa_ntasks'];
 	elements_id.forEach(item => {
 		document.getElementById(item).addEventListener('change', event => {
 			let options = get_options("noresa");
@@ -81,7 +81,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	});
 
-	elements_id = ['reservation', 'resa_exclusive', 'resa_cpuspertask', 'resa_minnodes', 'noresa_qos'];
+	elements_id = ['reservation', 'resa_exclusive', 'resa_cpuspertask', 'resa_minnodes', 'resa_qos', 'resa_ntasks'];
 	elements_id.forEach(item => {
 		document.getElementById(item).addEventListener('change', event => {
 			let options = get_options("resa");
