@@ -201,7 +201,7 @@ async function sshconnect(login, gateway,
 	// ssh key handling
 	// Checks for existing keys, 
 	// otherwise, generates and posts one
-	let valid_privatekey_path = privatekey_path+frontal;
+	let valid_privatekey_path = privatekey_path+frontal+login;
 	let key_passphrase;
 	try {
 		flogprogress(10, "Checking the private SSH key.");
