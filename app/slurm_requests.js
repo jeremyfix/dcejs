@@ -52,7 +52,7 @@ async function list_allocation() {
 
 function get_slurm_cmd(options, epilogpath) {
 	let slurm_cmd;
-	slurm_cmd = 'srun ';
+	slurm_cmd = 'salloc -x11 ';
 
 	console.log(`Slurm options : ${options} , path : ${epilogpath}`);
 
@@ -76,7 +76,7 @@ function get_slurm_cmd(options, epilogpath) {
 
 	if(epilogpath != null)
 		slurm_cmd += `--epilog="${epilogpath}" `
-	slurm_cmd += ` --pty bash^M`;
+	slurm_cmd += `^M`;
 	return slurm_cmd;
 }
 

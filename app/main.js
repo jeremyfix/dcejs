@@ -324,11 +324,11 @@ ipcMain.on("request-new-session", async (event, args) => {
 		let cpuspertask = args.cpuspertask;
 		let qos = args.qos;
 
-		let slurm_cmd = slurm_requests.get_slurm_cmd(args, screen_epilog);
+		let slurm_cmd = slurm_requests.get_slurm_cmd(args); //, screen_epilog);
 		console.log(`slurm commande : ${slurm_cmd}`);
 
 		cmd = `screen -S ${screen.get_screen_name()} -X stuff '${slurm_cmd}'`;
-		logprogress(50, `Allocating a node with srun ${cmd}`);
+		logprogress(50, `Allocating a node with salloc ${cmd}`);
 		await sshhandler.execute_on_frontal(cmd);
 
 		// Save the SLURM_JOBID in ~/.cscluster/resa-screen_pid.log
