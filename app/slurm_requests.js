@@ -71,8 +71,15 @@ function get_slurm_cmd(options, epilogpath) {
 
 	if(options.reservation != null) 
 		slurm_cmd +=`--reservation ${options.reservation} `;
-	else
-		slurm_cmd +=`-p ${options.partition} -t ${options.walltime} `;
+	else {
+		let partition = options.partition;
+		// Remove a possibly trailing * used to indicate the default 
+		// partition
+		if(partition.endsWith("*"))
+			partition = partition.replace(/\*+$/, "");
+			
+		slurm_cmd +=`-p ${partition} -t ${options.walltime} `;
+	}
 
 	if(epilogpath != null)
 		slurm_cmd += `--epilog="${epilogpath}" `
