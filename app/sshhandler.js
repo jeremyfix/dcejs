@@ -320,7 +320,7 @@ async function sshconnect_simple(login, gateway,
 	let valid_privatekey_path = privatekey_path+gateway+login;
 	let key_passphrase;
 	try {
-		flogprogress(10, "Checking the private SSH key.");
+		flogprogress(25, "Checking the private SSH key.");
 		valid_privatekey_path = await checkforkey(valid_privatekey_path);
 	}
 	catch(err) {
@@ -361,7 +361,7 @@ async function sshconnect_simple(login, gateway,
 		key_passphrase = await password_asker("We need to unlock you sshkey. Please provide the ssh-key passphrase you defined at the first connection.", "SSH-key passphrase : ");
 	}
 
-	flogprogress(30, "Reading the private SSH key.");
+	flogprogress(50, "Reading the private SSH key.");
 
 	let pkey = fs.readFileSync(valid_privatekey_path);
 	let gatewayparams = {
@@ -386,13 +386,13 @@ async function sshconnect_simple(login, gateway,
 
 		module.exports.ssh_gateway = ssh_gateway;
 		module.exports.ssh_frontal = ssh_frontal;
-		flogprogress(40, "Connecting to the gateway...");
+		flogprogress(75, "Connecting to the gateway...");
 		ssh_gateway.on('error', (error) => {
 			console.log(error);
 			reject("Unable to connect : invalid login and/or password");
 		});
 		ssh_gateway.on('ready', () => {
-			flogprogress(60, "Connected to the gateway.");
+			flogprogress(100, "Connected to the gateway.");
 	
 			resolve();
 		}).connect(gatewayparams);
