@@ -310,6 +310,94 @@ async function sshconnect(login, gateway,
 	});
 };
 
+async function sshconnect_simple(login, gateway,
+	flogprogress,
+	privatekey_path=default_keypath) {
+
+	// ssh key handling
+	// Checks for existing keys, 
+	// otherwise, generates and posts one
+	let valid_privatekey_path = privatekey_path+gateway+login;
+	let key_passphrase;
+	try {
+		flogprogress(25, "Checking the private SSH key.");
+		valid_privatekey_path = await checkforkey(valid_privatekey_path);
+	}
+	catch(err) {
+		if(err == "Keyfile does not exist") {
+			flogprogress(20, "Creating the private SSH key.");
+			await generateKey(valid_privatekey_path, 
+			default_comment+gateway)  // Generate
+				.then(genparams => {
+					key_passphrase = genparams.keypass;
+					return postKey(genparams.keypath,
+						login,
+						gateway, flogprogress); // Post
+				})
+				.catch(err => {
+					// If we have a failure, we must be removing the possibly
+					// generated keys because they may not be present 
+					// on the server
+					console.log(`I'm removing the generated keys ${valid_privatekey_path} and ${valid_privatekey_path}.pub`);
+					try {
+						  fs.unlinkSync(valid_privatekey_path);
+						  fs.unlinkSync(valid_privatekey_path+'.pub');
+					} catch(err) {
+						console.error("Unable to delete the previous keys");
+					}				
+					throw err;
+				});
+		}
+		else { // otherwise propagate the exception
+			throw err;
+		}
+	}
+	if(valid_privatekey_path == null) {
+		throw "ssh-key step failed";
+	}
+
+	if(key_passphrase == null) {
+		// We need to ask for the passphrase
+		key_passphrase = await password_asker("We need to unlock you sshkey. Please provide the ssh-key passphrase you defined at the first connection.", "SSH-key passphrase : ");
+	}
+
+	flogprogress(50, "Reading the private SSH key.");
+
+	let pkey = fs.readFileSync(valid_privatekey_path);
+	let gatewayparams = {
+		host: gateway,
+		username: login,
+		privateKey: pkey,
+		passphrase: key_passphrase,
+		readyTimeout: 99999 // required on windows apparently : see https://github.com/mscdex/ssh2/issues/142
+	};
+
+	// Store the keyparams, latter used to establish a connection
+	// to the nodes
+	keyparams = {
+		username: login,
+		privateKey: pkey,
+		passphrase: key_passphrase, 
+	};
+
+	return new Promise((resolve, reject) => {
+		ssh_gateway = new ssh2.Client();
+		ssh_frontal = ssh_gateway;
+
+		module.exports.ssh_gateway = ssh_gateway;
+		module.exports.ssh_frontal = ssh_frontal;
+		flogprogress(75, "Connecting to the gateway...");
+		ssh_gateway.on('error', (error) => {
+			console.log(error);
+			reject("Unable to connect : invalid login and/or password");
+		});
+		ssh_gateway.on('ready', () => {
+			flogprogress(100, "Connected to the gateway.");
+	
+			resolve();
+		}).connect(gatewayparams);
+	});
+};
 function register_nodes_prop(jobid, prop, value) {
 	if(!(ssh_nodes.hasOwnProperty(jobid))) 
 		ssh_nodes[jobid] = {
@@ -545,6 +633,7 @@ module.exports = {
 	ssh_frontal,
 	ssh_gateway,
 	sshconnect,
+	sshconnect_simple,
 	disconnect,
 	set_password_asker,
 	execute_on_frontal,

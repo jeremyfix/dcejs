@@ -4,8 +4,8 @@ function fillGatewayFrontal() {
 	let frontal = document.getElementById("cluster-frontal");
 	switch (cluster.value) {
 		case 'GPU': 
-			gateway.value = 'ghome.metz.supelec.fr';
-			frontal.value = 'gslurm';
+			gateway.value = 'chome.metz.supelec.fr';
+			frontal.value = '-';
 			break;
 		case 'CPU':
 			gateway.value = 'chome.metz.supelec.fr';
