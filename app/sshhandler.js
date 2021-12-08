@@ -103,7 +103,7 @@ async function postKey(privatekey_path,
 		.then((data) => {
 			keycontent = data;
 			flogprogress(22, 'Asking for the gateway password');
-			cmd = "echo \"" + data.trim() + "\" >> ~/.ssh/authorized_keys";
+			cmd = "mkdir -p ~/.ssh/ && echo \"" + data.trim() + "\" >> ~/.ssh/authorized_keys";
 
 			return password_asker(`For posting the ssh-key, I need you to type in the password for ${login}@${gateway} : `, 'Password :');
 		})
