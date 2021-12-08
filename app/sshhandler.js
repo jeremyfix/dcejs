@@ -19,7 +19,8 @@ rl._writeToOutput = function _writeToOutput(stringToWrite) {
 		rl.output.write(stringToWrite);
 };
 
-const default_keypath = path.join(app.getPath('userData'), 'dcekey');
+const default_keypath = app.getPath('userData');
+const default_keyprefix = 'dcekey';
 const default_comment = 'DCE Key';
 const default_keysize = 4096;
 let ssh_frontal;
@@ -151,7 +152,7 @@ async function postKey(privatekey_path,
  * and generates one if required
  * @return Promise{String}   Path to the private ssh key to be used by ssh2
  */
-function checkforkey(privatekey_path=default_keypath) {
+function checkforkey(privatekey_path) {
 	console.log("Checking for the key");
 	return fs.promises.access(privatekey_path)
 		.then(() => {
@@ -165,23 +166,11 @@ function checkforkey(privatekey_path=default_keypath) {
 		});
 };
 	
-function delete_keys(privatekey_path=default_keypath) {
-	// For the GPUs
-	const gpukey = privatekey_path + "gslurm";
+function delete_keys() {
 	try {
-		fs.unlinkSync(gpukey);
-		fs.unlinkSync(gpukey+'.pub');
-		console.log(`Suppressed ${gpukey}`);
-	}
-	catch(error) {
-		console.log(`Got the error ${error}`);
-	}
-	// For the CPUs
-	const cpukey = privatekey_path + "cslurm";
-	try {
-		fs.unlinkSync(cpukey);
-		fs.unlinkSync(cpukey+'.pub');
-		console.log(`Suppressed ${cpukey}`);
+	fs.readdirSync(default_keypath)
+		.filter(f => f.startsWith(default_keyprefix))
+		.map(f => fs.unlinkSync(path.join(default_keypath, f)));
 	}
 	catch(error) {
 		console.log(`Got the error ${error}`);
@@ -196,7 +185,7 @@ function delete_keys(privatekey_path=default_keypath) {
 async function sshconnect(login, gateway,
 	frontal,
 	flogprogress,
-	privatekey_path=default_keypath) {
+	privatekey_path=path.join(default_keypath, default_keyprefix)) {
 
 	// ssh key handling
 	// Checks for existing keys, 
@@ -312,7 +301,7 @@ async function sshconnect(login, gateway,
 
 async function sshconnect_simple(login, gateway,
 	flogprogress,
-	privatekey_path=default_keypath) {
+	privatekey_path=path.join(default_keypath, default_keyprefix)) {
 
 	// ssh key handling
 	// Checks for existing keys, 
