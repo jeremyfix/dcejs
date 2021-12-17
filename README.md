@@ -12,7 +12,7 @@ We need you to have `ssh-keygen` installed on your system. On Linux or MacOS, th
 
 On all the OS, you can check this works by ensuring you can execute the command `ssh-keygen` from a terminal.
 
-If you want to use VNC, you should also install the [tigerVNC client](https://sourceforge.net/projects/tigervnc/files/).
+If you want to use VNC, you should also install the [tigerVNC client](https://sourceforge.net/projects/tigervnc/files/). Some MacOS users reported issues when trying to run tigerVNC and were successfull using [realvnc](https://www.realvnc.com/fr/connect/download/viewer/macos/).
 
 If you want to use NoMachine, you should also install the [NoMachine client](http://www.nomachine.com)
 
