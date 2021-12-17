@@ -28,6 +28,8 @@ On Windows, you may need to "unlock the application" (in the properties of the e
 
 On MacOS, you also need to enforce MacOS to open the app even if it claims that the "developer cannot be verified". This can be done by Ctrl clicking on the app for launching it.
 
+On Linux, you need to add the execution permissions to the App image file which can be easily done by editing the properties of the app image file from the file explorer or by simply calling a `chmod +x ` on the app image file. 
+
 ## Running
 
 If you just want to test and run the app and have a Node installation, you just need to
