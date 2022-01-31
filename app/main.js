@@ -123,46 +123,22 @@ ipcMain.on("connect", (event, args) => {
 	connection_status = "connecting";
 	mainWindow.webContents.send("connection-status", connection_status);
 
-	if(args.frontal === '-') {
-		sshhandler.sshconnect_simple(args.login, args.gateway, logprogress)
-			.then(() => {
-				connection_status = "connected";
-				mainWindow.webContents.send("connection-status", connection_status);
-			})
-			.then(refresh_sessions)
-			.catch(error => {
-				// console.log(`Error : '${error}'`);
-				if(error == "TypeError: Cannot read property 'getPrivatePEM' of undefined") {
-					logfailure("Cannot open your private key. Did you type in the correct password ?", error);
-				}
-				else 
-					logfailure(error);
-				connection_status = "failed";
-				mainWindow.webContents.send("connection-status", connection_status);
-			});
-
-	}
-	else {
-		sshhandler.sshconnect(args.login, args.gateway, args.frontal, logprogress)
-			.then(() => {
-				connection_status = "connected";
-				mainWindow.webContents.send("connection-status", connection_status);
-			})
-			.then(refresh_sessions)
-			.catch(error => {
-				// console.log(`Error : '${error}'`);
-				if(error == "TypeError: Cannot read property 'getPrivatePEM' of undefined") {
-					logfailure("Cannot open your private key. Did you type in the correct password ?", error);
-				}
-				else 
-					logfailure(error);
-				connection_status = "failed";
-				mainWindow.webContents.send("connection-status", connection_status);
-			});
-
-
-	}
-
+	sshhandler.sshconnect_simple(args.login, args.gateway, logprogress)
+		.then(() => {
+			connection_status = "connected";
+			mainWindow.webContents.send("connection-status", connection_status);
+		})
+		.then(refresh_sessions)
+		.catch(error => {
+			// console.log(`Error : '${error}'`);
+			if(error == "TypeError: Cannot read property 'getPrivatePEM' of undefined") {
+				logfailure("Cannot open your private key. Did you type in the correct password ?", error);
+			}
+			else 
+				logfailure(error);
+			connection_status = "failed";
+			mainWindow.webContents.send("connection-status", connection_status);
+		});
 });
 
 function refresh_sessions() {

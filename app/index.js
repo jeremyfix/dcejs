@@ -1,33 +1,12 @@
-function fillGatewayFrontal() {
-	let cluster = document.getElementById("cluster-choice");
-	let gateway = document.getElementById("cluster-gateway");
-	let frontal = document.getElementById("cluster-frontal");
-	switch (cluster.value) {
-		case 'GPU': 
-			gateway.value = 'chome.metz.supelec.fr';
-			frontal.value = '-';
-			break;
-		case 'CPU':
-			gateway.value = 'chome.metz.supelec.fr';
-			frontal.value = 'cslurm';
-			break;
-		default:
-			console.log(`Sorry, unrecognized cluster value ${cluster.value}.`)
-	}
-	window.api.log("Selected " + cluster.value);
-}
-
 function connect() {
 	let login = document.getElementById('cluster-login').value;
 	if(login == "") // Skip if the field is not given
 		return;
 	let gateway = document.getElementById('cluster-gateway').value;
-	let frontal = document.getElementById('cluster-frontal').value;
 
 	window.api.send("connect", {
 		"login": login,
-		"gateway": gateway,
-		"frontal": frontal
+		"gateway": gateway
 	});
 }
 
@@ -128,9 +107,6 @@ window.api.receive("refresh-sessions", (event, arg) => {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-	let clusterchoice = document.getElementById('cluster-choice');
-	clusterchoice.addEventListener('change', fillGatewayFrontal);
-
 	let connectBtn = document.getElementById('connectBtn');
 	connectBtn.addEventListener('click', function(event) {
 		event.preventDefault(); // To avoid "submitting" i.e. reseting the form
