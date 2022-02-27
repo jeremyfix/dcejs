@@ -81,7 +81,10 @@ window.api.receive("refresh-sessions", (event, arg) => {
 			newbody += `<td class="${startappcls_nomachine}" id="nomachine">localhost:${elem.nomachine}</td>`;
 		else
 			newbody += `<td>--</td>`;
-		newbody += `<td><button class="appstart" id="${elem.jobid},${firstnode}"><span class="apps">&#9881;</span>Actions</button></td>`;
+		let enabled_button = '';
+		if(elem.time == 'INVALID')
+			enabled_button = ' disabled '
+		newbody += `<td><button class="appstart" id="${elem.jobid},${firstnode}" ${enabled_button}><span class="apps">&#9881;</span>Actions</button></td>`;
 		newbody += "</tr>";
 	});
 	let table = document.getElementById("table-sessions");
