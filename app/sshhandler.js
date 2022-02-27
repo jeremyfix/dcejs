@@ -594,7 +594,9 @@ function find_free_port(start_port, max_port) {
 	});
 }
 
-function port_forward(jobid, dstport) {
+function port_forward(myjobid, dstport) {
+	const jobid = myjobid;
+	console.log(`Searching for a free port for jobid ${jobid}`);
 	return find_free_port(dstport, dstport + 1000).then((srcport) => {
 		console.log(`Found a free port ${srcport}`);
 		return new Promise((resolve, reject) => { 
@@ -603,8 +605,13 @@ function port_forward(jobid, dstport) {
 					console.log(`Forward socket error : ${err}`);
 				});
 				if(!(ssh_nodes.hasOwnProperty(jobid))){
+					// When this situation occurs, for a weird reason,
+					// the jobid is usually an older one ....
+					// like the jobid associated that set up the tunnel
+					// for this port that is now identified to be used
 					console.log(`In port forward with job ${jobid}, port ${srcport}, jobid not in ssh_nodes `);
-					reject("Cannot port forward")
+					reject("Cannot port forward");
+					return;
 				}
 				const conn = ssh_nodes[jobid].conn;
 				conn.forwardOut('localhost', srcport, 'localhost', dstport, 
