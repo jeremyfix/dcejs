@@ -1,11 +1,3 @@
-
-function kill() {
-	const jobid = parseInt(document.getElementById("jobid").innerHTML);
-	window.api.send("kill", {
-		jobid: jobid
-	});
-}
-
 function launchx() {
 	const jobid = parseInt(document.getElementById("jobid").innerHTML);
 	window.api.send("startx", {
@@ -30,9 +22,6 @@ function startnomachine() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-	let killBtn = document.getElementById('killBtn');
-	killBtn.addEventListener('click', kill);
-
 	let launchXBtn = document.getElementById('launchXBtn');
 	launchXBtn.addEventListener('click', launchx);
 

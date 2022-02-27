@@ -46,6 +46,18 @@ function start_app(application, params) {
 	});
 } 
 
+function kill_allocation(jobid) {
+	parsed_jobid = parseInt(jobid);
+	if (! isNaN(parsed_jobid)) {
+		// Send the kill instruction only if the jobid is valid
+		// However, this might not be necessary because a listed job
+		// may always have a valid jobid (although it might not be running)
+		window.api.send("kill", {
+			jobid: parsed_jobid 
+		});
+	}
+}
+
 function show_app(jobid, firstnode) {
 	window.api.send('show_app', {
 		jobid: jobid,
@@ -81,6 +93,10 @@ window.api.receive("refresh-sessions", (event, arg) => {
 			newbody += `<td class="${startappcls_nomachine}" id="nomachine">localhost:${elem.nomachine}</td>`;
 		else
 			newbody += `<td>--</td>`;
+
+		// Allocation killer
+		newbody += `<td><button class="jobkill" id="${elem.jobid}">Kill</button></td>`;
+		// Actions
 		let enabled_button = '';
 		if(elem.time == 'INVALID')
 			enabled_button = ' disabled '
@@ -89,6 +105,12 @@ window.api.receive("refresh-sessions", (event, arg) => {
 	});
 	let table = document.getElementById("table-sessions");
 	table.innerHTML = newbody;
+
+	document.querySelectorAll("button.jobkill").forEach(elem => {
+		elem.addEventListener('click', () => { 
+			kill_allocation(elem.id); 
+		});
+	});
 
 	document.querySelectorAll("button.appstart").forEach(elem => {
 		elem.addEventListener('click', () => { 

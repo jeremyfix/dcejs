@@ -449,7 +449,8 @@ ipcMain.on("kill", async (event, arg) => {
 		});
 
 	// And close the app window
-	appwindow.close();
+	if(appwindow != null)
+		appwindow.close();
 });
 
 ipcMain.on("startx", (event, arg) => {
