@@ -94,13 +94,14 @@ window.api.receive("refresh-sessions", (event, arg) => {
 		else
 			newbody += `<td>--</td>`;
 
-		// Allocation killer
-		newbody += `<td><button class="jobkill" id="${elem.jobid}">Kill</button></td>`;
 		// Actions
 		let enabled_button = '';
 		if(elem.time == 'INVALID')
 			enabled_button = ' disabled '
 		newbody += `<td><button class="appstart" id="${elem.jobid},${firstnode}" ${enabled_button}><span class="apps">&#9881;</span>Actions</button></td>`;
+		//
+		// Allocation killer
+		newbody += `<td><button class="jobkill" id="${elem.jobid}">Kill</button></td>`;
 		newbody += "</tr>";
 	});
 	let table = document.getElementById("table-sessions");
