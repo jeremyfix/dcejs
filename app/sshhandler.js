@@ -580,8 +580,8 @@ function find_free_port_rec(start_port, max_port, resolve, reject) {
 	const s = createConnection({port: start_port, host: 'localhost'})
 		.on('connect', function() {
 			console.log(`Port ${start_port} NOT free`);
-			find_free_port_rec(start_port+1,max_port, resolve, reject); 
 			s.end();
+			find_free_port_rec(start_port+1,max_port, resolve, reject); 
 		})
 		.on('error', err => {
 			console.log(`Port ${start_port} free`);
@@ -602,6 +602,10 @@ function port_forward(jobid, dstport) {
 				socket.on("error", (err) => {
 					console.log(`Forward socket error : ${err}`);
 				});
+				if(!(ssh_nodes.hasOwnProperty(jobid))){
+					console.log(`In port forward with job ${jobid}, port ${srcport}, jobid not in ssh_nodes `);
+					reject("Cannot port forward")
+				}
 				const conn = ssh_nodes[jobid].conn;
 				conn.forwardOut('localhost', srcport, 'localhost', dstport, 
 					(error, stream) => {
