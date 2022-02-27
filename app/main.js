@@ -1,4 +1,5 @@
 const {app, BrowserWindow, ipcMain, Menu, dialog } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const { spawn } = require('child_process');
 const path = require("path");
 const url = require("url");
@@ -19,6 +20,20 @@ let connection_status="disconnected";
 const logdirectory="~/.cscluster/"
 
 if(require('electron-squirrel-startup')) return;
+
+autoUpdater.on('error', () => {
+	console.log('Error in auto update check');
+})
+
+autoUpdater.on('update-available', (ev, info) => {
+	const options = {
+		type: 'info',
+		title: 'Newer version',
+		message: 'A newer version is available only. Please check and download the releases from https://github.com/jeremyfix/dcejs/releases'
+	};
+	dialog.showMessageBox(null, options);
+	console.log('Update available.');
+})
 
 function createMainMenu() {
 	const isMac = process.platform === 'darwin';
@@ -111,6 +126,12 @@ app.on('ready', function() {
 		mainWindow = null;
 		passwindow = null;
 	});
+
+	// Disable auto download/install of a new version
+	// this is not working on all OS because the app is not signed
+	// at least we will indicate a new version is available
+	autoUpdater.autoDownload = false;
+	autoUpdater.checkForUpdates();
 
 });
 
