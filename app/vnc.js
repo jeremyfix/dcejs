@@ -107,7 +107,7 @@ function find_vncviewer() {
 				profile += data;
 			});
 			sp.stderr.on('data', data => {
-				reject(`Error when looking for nomachine : ${data}`);
+				reject(`Error when looking for vnc : ${data}`);
 			});
 
 			sp.stdout.on('end', () => {
@@ -126,6 +126,24 @@ function find_vncviewer() {
 				pathtoprog = pathtoprog.replace(/\s/g, ' \\');
 				pathtoprog = path.join(pathtoprog, 'Contents', 'MacOS', 'TigerVNC\\ Viewer');
 				resolve(pathtoprog);
+			});
+		}
+		else if(platform == 'win32') {
+			const cmd = 'where';
+			const options = ['vncviewer.exe'];
+			const sp = spawn(cmd, options);
+
+			let pathtovnc = '';
+			sp.stdout.on('data', data => {
+				pathtovnc += data;
+			});
+			sp.stderr.on('data', data => {
+				reject('vncviewer.exe not found on windows');
+			});
+
+			sp.stdout.on('end', () => {
+				console.log(`Found vncviewer at ${pathtovnc}`);
+				resolve(pathtovnc);
 			});
 		}
 		else {
