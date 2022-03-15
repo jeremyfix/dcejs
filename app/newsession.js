@@ -98,7 +98,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		if(document.getElementById('resa_ntasks').value != "")
 			document.getElementById('resa_cpuspertask').value = "";
 	});
-	elements_id = ['reservation', 'resa_exclusive', 'resa_cpuspertask', 'resa_minnodes', 'resa_qos', 'resa_ntasks'];
+	elements_id = ['reservation', 'resa_walltime', 'resa_exclusive', 'resa_cpuspertask', 'resa_minnodes', 'resa_qos', 'resa_ntasks'];
 	elements_id.forEach(item => {
 		document.getElementById(item).addEventListener('change', event => {
 			let options = get_options("resa");
@@ -233,12 +233,26 @@ function get_options(mode) {
 	}
 	else {
 		let label_error = document.getElementById("errorresa");
+		// Let us clean up previous error message
+		label_error.innerText = '';
 		let resacode = document.getElementById("reservation").value;
 		
 		if(resacode == '') {
 			label_error.innerHTML = `The reservation code is required `;
 			return;
 		}
+		let walltime = document.getElementById("resa_walltime").value;
+		// Walltime can be empty, it is an optional field
+		let regex_walltime = /^\d+:\d+$/;
+		if(walltime != '') {
+			if (!(regex_walltime.test(walltime))) {
+				label_error.innerText = `walltime ${walltime} matching failed, not hh:mm !`;
+				return;
+			}
+			// Append the seconds to the walltime
+			walltime = walltime + ':00';
+		}
+		
 
 		let advanced = document.getElementById("advanced_resa").checked;
 		let exclusive = document.getElementById("resa_exclusive");
@@ -298,7 +312,7 @@ function get_options(mode) {
 			mode: "resa",
 			partition: null,
 			reservation: resacode,
-			walltime: null,
+			walltime: walltime,
 			advanced: advanced,
 			exclusive: value_exclusive,
 			minnodes: value_minnodes,

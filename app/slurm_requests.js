@@ -69,8 +69,12 @@ function get_slurm_cmd(options, epilogpath) {
 	if(options.ntasks != null) 
 		slurm_cmd += `-n ${options.ntasks} `;
 
-	if(options.reservation != null) 
+	if(options.reservation != null) {
 		slurm_cmd +=`--reservation ${options.reservation} `;
+		if(options.walltime != '') {
+			slurm_cmd += `-t ${options.walltime} `; 
+		}
+	}
 	else {
 		let partition = options.partition;
 		// Remove a possibly trailing * used to indicate the default 
