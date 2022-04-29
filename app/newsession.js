@@ -253,7 +253,6 @@ function get_options(mode) {
 			walltime = walltime + ':00';
 		}
 		
-
 		let advanced = document.getElementById("advanced_resa").checked;
 		let exclusive = document.getElementById("resa_exclusive");
 		let value_exclusive = true;
@@ -268,10 +267,10 @@ function get_options(mode) {
 
 		if(exclusive.checked) { 
 			cpuspertask.value = "";
-			cpuspertask.readonly = true;
+			cpuspertask.readOnly = true;
 		}
-		else
-			cpuspertask.readonly = false;
+		else 
+			cpuspertask.readOnly = false;
 
 		if(advanced) {
 
