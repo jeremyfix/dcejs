@@ -383,7 +383,10 @@ ipcMain.on("request-new-session", async (event, args) => {
 		// The following will wait until the slurm job is started
 		// since otherwise the srun command is still blocking 
 		// and the file in which we store the job id is not created !
-		const jobid = await sshhandler.read_file(resalogfile, 20);
+		// We add a hack there, waiting for a very long time which 
+		// might be required for a node to start if it is idle~ , i.e. 
+		// in hibernation or powered off; let us wait for 5 minutes
+		const jobid = await sshhandler.read_file(resalogfile, 60*5);
 		if(jobid == '') {
 			logprogress(70, `Failed to allocate '${jobid}'`);
 			throw "srun failed";
