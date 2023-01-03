@@ -259,7 +259,7 @@ function createNewSessionWindow() {
 
 ipcMain.on("show-new-session", async (event, args) => {
 	// Get the list of partitions with their maxtime
-	let cmd = 'sinfo | tail -n +2 | awk \'{if ($5 == "idle") print $1,$3,$6}\'' ;
+	let cmd = 'sinfo | tail -n +2 | awk \'{if ($2 == "up" && ($5 == "idle" || $5 == "idle~")) print $1,$3,$6}\'' ;
 	let partitions = await sshhandler.execute_on_frontal(cmd);
 	partitions = partitions.split("\n");
 	let partition_list = [];
