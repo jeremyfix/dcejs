@@ -372,7 +372,7 @@ ipcMain.on("request-new-session", async (event, args) => {
 		let resalogfile = `${logdirectory}/resa-${screen_pid}.log`;
 		slurm_cmd = `'rm -f ${resalogfile}; sync^M'`
 		cmd = `screen -S ${screen.get_screen_name()} -X stuff ${slurm_cmd}`;
-		logprogress(60, `Recovering the jobid`);
+		logprogress(60, `Recovering the jobid (can last up to 5 minutes if the nodes was powered off)`);
 		await sshhandler.execute_on_frontal(cmd);
 
 		slurm_cmd = `'echo \\\$SLURM_JOBID > ${resalogfile}; sync^M'`
