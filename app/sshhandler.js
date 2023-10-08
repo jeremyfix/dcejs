@@ -61,7 +61,8 @@ async function generateKey(privatekey_path, comment) {
 
 		const cmd = 'ssh-keygen';
 		const opts = [
-			'-t', 'rsa', 
+			// '-t', 'rsa', 
+			'-t', 'ed25519', 
 			'-b', '4096',
 			'-C',  `"${comment}"`,
 			'-f', privatekey_path,
@@ -459,8 +460,8 @@ function connect_x11_node(jobid, node) {
 			});
 
 		conn.on('ready', () => {
-		// Register the client in the list of clients
-		console.log("X11 connected");
+			// Register the client in the list of clients
+			console.log("X11 connected");
 			register_nodes_prop(jobid, "conn", conn);	
 			resolve();	
 		});
