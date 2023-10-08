@@ -44,7 +44,8 @@ function get_ports(jobid, attempts=2) {
 				if(elem == '')
 					return;
 				const elems = elem.split(" ");
-				const portstr = elems[0].substring(1);
+				const portstr = elems[0]; //.substring(1);
+				console.log(`VNC elems : '${elems}', portstr ${portstr}`);
 
 				const port = parseInt(portstr);
 				// For some reasons my command above may
