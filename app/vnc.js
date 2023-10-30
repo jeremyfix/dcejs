@@ -33,7 +33,7 @@ function check(jobid) {
 // Returns the port of the vnc running server
 // Returns a Promise
 function get_ports(jobid, attempts=2) {
-	const cmd = 'vncserver -list -cleanstale 2>/dev/null | tail -n +5 | awk \'{print \\\\\\$1,\\\\\\$2}\'';
+	const cmd = 'vncserver -list -cleanstale 2>/dev/null | tail -n +5 | awk \'{print \\\\\\$2}\'';
 
 	return screen.run_in_screen(cmd, jobid)
 		.then((stds) => {
@@ -43,11 +43,9 @@ function get_ports(jobid, attempts=2) {
 			vnc_sessions.forEach(elem => {
 				if(elem == '')
 					return;
-				const elems = elem.split(" ");
-				const portstr = elems[0].substring(1);
-				console.log(`VNC elems : '${elems}', portstr ${portstr}`);
+				console.log(`VNC elem : '${elem}'`);
 
-				const port = parseInt(portstr);
+				const port = parseInt(elem);
 				// For some reasons my command above may
 				// redirect TigerVNC server, ,X DISPLAY   into portstr
 				// which should not happen because of the tail -n + 5!!
@@ -56,7 +54,7 @@ function get_ports(jobid, attempts=2) {
 					throw "Invalid port!";
 				}
 
-				vnc_ports.push(5900 + port);
+				vnc_ports.push(port);
 			});
 			return vnc_ports;
 		})
