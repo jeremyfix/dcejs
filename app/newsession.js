@@ -80,7 +80,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			document.getElementById('noresa_cpuspertask').value = "";
 	});
 
-	let elements_id = ['walltime', 'partitions', 'noresa_exclusive', 'noresa_cpuspertask', 'noresa_minnodes', 'noresa_qos', 'noresa_ntasks'];
+	let elements_id = ['walltime', 'partitions', 'noresa_exclusive', 'noresa_cpuspertask', 'noresa_minnodes', 'noresa_qos', 'noresa_ntasks', 'noresa_constraint'];
 	elements_id.forEach(item => {
 		document.getElementById(item).addEventListener('change', event => {
 			let options = get_options("noresa");
@@ -98,7 +98,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		if(document.getElementById('resa_ntasks').value != "")
 			document.getElementById('resa_cpuspertask').value = "";
 	});
-	elements_id = ['reservation', 'resa_walltime', 'resa_exclusive', 'resa_cpuspertask', 'resa_minnodes', 'resa_qos', 'resa_ntasks'];
+	elements_id = ['reservation', 'resa_walltime', 'resa_exclusive', 'resa_cpuspertask', 'resa_minnodes', 'resa_qos', 'resa_ntasks', 'resa_constraint'];
 	elements_id.forEach(item => {
 		document.getElementById(item).addEventListener('change', event => {
 			let options = get_options("resa");
@@ -171,6 +171,8 @@ function get_options(mode) {
 		let value_qos = null;
 		let ntasks = document.getElementById("noresa_ntasks");
 		let value_ntasks = null;
+		let constraint = document.getElementById("noresa_constraint");
+		let value_constraint = null;
 
 		if(exclusive.checked) { 
 			cpuspertask.value = "";
@@ -214,6 +216,8 @@ function get_options(mode) {
 			value_minnodes = parseInt(minnodes.value);
 			if(qos.value != "")
 				value_qos = qos.value;
+			if(constraint.value != "")
+				value_constraint = constraint.value;
 		}
 		
 		label_error.innerHTML = '';
@@ -227,7 +231,8 @@ function get_options(mode) {
 			minnodes: value_minnodes,
 			cpuspertask: value_cpuspertask,
 			qos: value_qos,
-			ntasks: value_ntasks
+			ntasks: value_ntasks,
+			constraint: value_constraint
 		};
 		return options;
 	}

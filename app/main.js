@@ -359,6 +359,7 @@ ipcMain.on("request-new-session", async (event, args) => {
 		let minnodes = args.minnodes;
 		let cpuspertask = args.cpuspertask;
 		let qos = args.qos;
+		let constraint = args.constraint;
 
 		let slurm_cmd = slurm_requests.get_slurm_cmd(args, screen_epilog);
 		console.log(`slurm commande : ${slurm_cmd}`);

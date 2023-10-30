@@ -62,6 +62,8 @@ function get_slurm_cmd(options, epilogpath) {
 		slurm_cmd += `-N 1 `;
 	if(options.qos != null)
 		slurm_cmd += `--qos ${options.qos} `;
+	if(options.constraint != null)
+		slurm_cmd += `--constraint ${options.constraint} `;
 	if(options.cpuspertask != null) 
 		slurm_cmd += `-c ${options.cpuspertask} `;
 	if(options.exclusive)
