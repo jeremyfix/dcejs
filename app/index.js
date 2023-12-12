@@ -71,6 +71,7 @@ window.api.receive("refresh-sessions", (event, arg) => {
 	const startappcls_vnc = ((platform == 'linux') || (platform == 'darwin')) ? 'startapp' : '';
 	const startappcls_nomachine = ((platform == 'linux') || (platform == 'darwin')) ? 'startapp' : '';
 	arg.sessions.forEach(elem => {
+		console.log(`Processing ${elem} for display`);
 		let firstnode = elem.nodelist;
 		if(/^\w*\[\d*-\d*\]$/.test(firstnode)) {
 			// We have a group of node, we extract the first node
@@ -91,6 +92,10 @@ window.api.receive("refresh-sessions", (event, arg) => {
 			newbody += `<td>--</td>`;
 		if(elem.nomachine != null) 
 			newbody += `<td class="${startappcls_nomachine}" id="nomachine">localhost:${elem.nomachine}</td>`;
+		else
+			newbody += `<td>--</td>`;
+		if(elem.vscode != null) 
+			newbody += `<td id="vscode">http://localhost:${elem.vscode}</td>`;
 		else
 			newbody += `<td>--</td>`;
 

@@ -392,10 +392,12 @@ function register_nodes_prop(jobid, prop, value) {
 	if(!(ssh_nodes.hasOwnProperty(jobid))) 
 		ssh_nodes[jobid] = {
 			conn: null,
-			vnc_port: null
+			vnc_port: null,
+			nomachine_port: null,
+			vscode_port: null
 		};
 	ssh_nodes[jobid][prop] = value;
-	// console.log(ssh_nodes);
+	console.log(ssh_nodes);
 }
 
 function get_job_props(jobid) {

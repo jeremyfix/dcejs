@@ -24,9 +24,12 @@ async function list_allocation() {
 					jobprops = sshhandler.get_job_props(fields[0]);				
 					let vncport = null;
 					let nomachineport = null;
+					let vscodeport = null;
 					if(jobprops != null) {
 						vncport = jobprops.vnc_port;
 						nomachineport = jobprops.nomachine_port;
+						vscodeport = jobprops.vscode_port;
+						console.log(`Extracted the port : ${vscodeport}`);
 					}
 					allocations.push({
 						jobid: fields[0],
@@ -38,7 +41,8 @@ async function list_allocation() {
 						nodes: fields[6],
 						nodelist: fields[7],
 						vnc: vncport,
-						nomachine: nomachineport
+						nomachine: nomachineport,
+						vscode: vscodeport
 					});
 				}
 			});

@@ -8,6 +8,7 @@ const slurm_requests = require('./slurm_requests.js');
 const screen = require("./screen.js");
 const vnc = require("./vnc.js");
 const nomachine = require("./nomachine.js");
+const vscode = require("./vscode.js");
 const fs = require('fs');
 const { readFile } = require('fs/promises');
 
@@ -541,6 +542,37 @@ ipcMain.on("startvnc", (event, arg) => {
 			logfailure(`Running VNC failed: ${error}`, `Error while running VNC ${error}`);
 		});
 });
+
+//
+// We need 1) to check code-server is running  2) to bind code-server:8080
+ipcMain.on("startvscode", (event, arg) => {
+	appwindow.close();
+	const jobid = arg.jobid;
+	logprogress(5, "Going to start VSCode server");
+
+	vscode.start(jobid) 
+		.then((available) => {
+			logprogress(25, `VSCode server is running`);
+		})
+		.then(() => {
+			logprogress(50, `Setting up the ssh tunnel`);
+			// 8080 is the port on which code-server is listening on the remote
+			return sshhandler.port_forward(jobid, 8080);
+		})
+		.then((srcport) => {
+			console.log("VSCode port  : ");
+			console.log(srcport);
+			sshhandler.register_nodes_prop(jobid, 'vscode_port', srcport);
+			logprogress(75, `Server ready`);
+		})
+		.then(refresh_sessions)
+		.then(() => {
+			logprogress(100, "VSCode server done. Please start your browser and connect to the provided url.");
+		})
+		.catch(error => {
+			logfailure("Running VSCode failed", `Error while running VSCode ${error}`);
+		});
+})
 
 // Note : 
 // We need 1) to check nomachine is running  2) to bind nomachine
