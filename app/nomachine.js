@@ -1,10 +1,3 @@
-let jsonpath;
-let parser;
-
-if(process.platform === 'darwin') {
-	jsonpath = require('jsonpath');
-	parser = require('xml2json');
-}
 const path = require('path');
 const { spawn } = require('child_process');
 const fs = require('fs');
@@ -37,28 +30,29 @@ function find_nomachine() {
 			resolve('/usr/NX/bin/nxplayer');
 		}
 		else if(platform == 'darwin') {
-			const cmd = 'system_profiler';
-			const options = [
-				'-xml', 'SPApplicationsDataType'
-			];
-			let profile = '';
-			const sp = spawn(cmd, options);
-			sp.stdout.on('data', data => {
-				profile += data;
-			});
-			sp.stderr.on('data', data => {
-				reject(`Error when looking for nomachine : ${data}`);
-			});
+			// const cmd = 'system_profiler';
+			// const options = [
+			// 	'-xml', 'SPApplicationsDataType'
+			// ];
+			// let profile = '';
+			// const sp = spawn(cmd, options);
+			// sp.stdout.on('data', data => {
+			// 	profile += data;
+			// });
+			// sp.stderr.on('data', data => {
+			// 	reject(`Error when looking for nomachine : ${data}`);
+			// });
 
-			sp.stdout.on('end', () => {
-				profile = parser.toJson(profile, {object: true});	
-				const entries = jsonpath
-					.query(profile, '$..dict[?(@.string[0]=="NoMachine")]');
-				if(entries.length == 0)
-					reject('NoMachine not available');
-				const entry = entries[0].string[4].replace(/\s/g, ' \\');
-				resolve(path.join(entry, 'Contents', 'MacOS' ,'nxplayer'));
-			});
+			// sp.stdout.on('end', () => {
+			// 	profile = parser.toJson(profile, {object: true});	
+			// 	const entries = jsonpath
+			// 		.query(profile, '$..dict[?(@.string[0]=="NoMachine")]');
+			// 	if(entries.length == 0)
+			// 		reject('NoMachine not available');
+			// 	const entry = entries[0].string[4].replace(/\s/g, ' \\');
+			// 	resolve(path.join(entry, 'Contents', 'MacOS' ,'nxplayer'));
+			// });
+			reject('NoMachine not available');
 		}
 		else {
 			reject('NoMachine not available');
