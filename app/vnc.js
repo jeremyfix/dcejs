@@ -1,10 +1,3 @@
-let jsonpath;
-let parser;
-
-if(process.platform === 'darwin') {
-	jsonpath = require('jsonpath');
-	parser = require('xml2json');
-}
 const path = require('path');
 const { spawn } = require('child_process');
 
@@ -96,36 +89,38 @@ function find_vncviewer() {
 			resolve('/usr/bin/vncviewer');
 		}
 		else if(platform == 'darwin') {
-			const cmd = 'system_profiler';
-			const options = [
-				'-xml', 'SPApplicationsDataType'
-			];
-			let profile = '';
-			const sp = spawn(cmd, options);
-			sp.stdout.on('data', data => {
-				profile += data;
-			});
-			sp.stderr.on('data', data => {
-				reject(`Error when looking for vnc : ${data}`);
-			});
+			// const cmd = 'system_profiler';
+			// const options = [
+			// 	'-xml', 'SPApplicationsDataType'
+			// ];
+			// let profile = '';
+			// const sp = spawn(cmd, options);
+			// sp.stdout.on('data', data => {
+			// 	profile += data;
+			// });
+			// sp.stderr.on('data', data => {
+			// 	reject(`Error when looking for vnc : ${data}`);
+			// });
 
-			sp.stdout.on('end', () => {
-				profile = parser.toJson(profile, {object: true});	
-				const entries = jsonpath
-					.query(profile, 'plist.array.dict.array[1].dict[*]');
-				entries.forEach(elem => {
-					if(elem.string[0].match(/^TigerVNC/g)) 
-						pathtoprog = elem.string[4];
-				});
-				if(pathtoprog == null) {
-					reject('VNCViewer not available');
-					return;
-				}
+			// sp.stdout.on('end', () => {
+			// profile = parser.toJson(profile, {object: true});	
+			// const entries = jsonpath
+			// 	.query(profile, 'plist.array.dict.array[1].dict[*]');
+			// entries.forEach(elem => {
+			// 	if(elem.string[0].match(/^TigerVNC/g)) 
+			// 		pathtoprog = elem.string[4];
+			// });
+			// if(pathtoprog == null) {
+			// 	reject('VNCViewer not available');
+			// 	return;
+			// }
 
-				pathtoprog = pathtoprog.replace(/\s/g, ' \\');
-				pathtoprog = path.join(pathtoprog, 'Contents', 'MacOS', 'TigerVNC\\ Viewer');
-				resolve(pathtoprog);
-			});
+			// pathtoprog = pathtoprog.replace(/\s/g, ' \\');
+			// pathtoprog = path.join(pathtoprog, 'Contents', 'MacOS', 'TigerVNC\\ Viewer');
+			// resolve(pathtoprog);
+			// });
+			reject('VNCViewer not available');
+			return;
 		}
 		else if(platform == 'win32') {
 			const cmd = 'where';
