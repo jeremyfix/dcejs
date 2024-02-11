@@ -4,16 +4,15 @@
 		<title>Port forwarding</title>
 		<link rel="stylesheet" href="app.css">
 		<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 	<body>
-		<div class="wrapper">
-			<div class="header">
-				<label id="jobid" class="jobinfo">JOBID</label>
-				<label id="firstnode" class="jobinfo">FIRST NODE</label>
-				<label for="port">Enter the value of the remote port:</label>
-				<input type="number" id="port">
-				<input type="button" value="Ok" id="portForwardBtn"/>
-			</div>
+		<div class="column">
+			<label id="jobid" class="jobinfo">JOBID</label>
+			<label id="firstnode" class="jobinfo">FIRST NODE</label>
+			<label >Enter the value of the remote port:</label>
+			<input type="number" id="port" min=0 max=65535>
+			<input type="button" value="Ok" id="portForwardBtn"/>
 		</div>
 		<script src="./get_forwardport.js"></script>
 	</body>

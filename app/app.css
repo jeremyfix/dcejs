@@ -2,7 +2,7 @@ html, body, video {
 	height: 100%;
 	width: 100%;
 	margin: 0;
-	font-family: calibri;
+	/* font-family: calibri; */
 }
 
 /* https://webdesign.tutsplus.com/tutorials/how-to-build-web-form-layouts-with-css-grid--cms-28776 */
@@ -43,6 +43,25 @@ html, body, video {
 	"se se se se   se   se   se   se   se"
 	"ft ft ft ft   ft   ft   ft   ft   ft";
 }
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.column label {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+.column input {
+}
+
 
 img {
 	margin: 10px;
