@@ -487,6 +487,47 @@ ipcMain.on("show_app", (event, arg) => {
 		});
 });
 
+ipcMain.on("info", async (event, arg) => {
+	const jobid = arg.jobid;
+
+	msg = `Here are some information about your job ${jobid}. `
+
+	job_props = sshhandler.get_job_props(jobid);
+	if(job_props != null) {
+		msg += "We have forwarded the following ports : \n";
+		if(job_props['vnc_port'] != null) {
+			const vnc_port = job_props['vnc_port'];
+			msg += `- VNC : localhost:${vnc_port}\n`;
+		}
+		if(job_props['vscode_port'] != null) {
+			const vscode_port = job_props['vscode_port'];
+			msg += `- VSCode : localhost:${vscode_port}\n`;
+		}
+		if(job_props['nomachine_port'] != null) {
+			const nomachine_port = job_props['nomachine_port'];
+			msg += `- NoMachine : localhost:${nomachine_port}\n`;
+		}
+		console.log(typeof job_props['forwarded_ports']);
+		if(job_props['forwarded_ports'].size != 0) {
+			job_props['forwarded_ports'].forEach((value, key) => {
+				msg = msg + `- remote:${value} -> localhost:${key}\n`;
+			});
+
+		}
+	}
+
+	const options = {
+		type: 'info',
+		title: 'Job information',
+		message: msg,
+	  };
+
+	  dialog.showMessageBox(mainWindow, options, (response, checkboxChecked) => {
+		console.log(response);
+		console.log(checkboxChecked);
+	  });
+});
+
 ipcMain.on("kill", async (event, arg) => {
 	//Kill the session
 	const jobid = arg.jobid;

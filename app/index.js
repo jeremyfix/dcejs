@@ -46,6 +46,15 @@ function start_app(application, params) {
 	});
 } 
 
+function info_allocation(jobid) {
+	parsed_jobid = parseInt(jobid);
+	if (! isNaN(parsed_jobid)) {
+		window.api.send("info", {
+			jobid: parsed_jobid 
+		});
+	}
+}
+
 function kill_allocation(jobid) {
 	parsed_jobid = parseInt(jobid);
 	if (! isNaN(parsed_jobid)) {
@@ -105,12 +114,20 @@ window.api.receive("refresh-sessions", (event, arg) => {
 			enabled_button = ' disabled '
 		newbody += `<td><button class="appstart" id="${elem.jobid},${firstnode}" ${enabled_button}><span class="apps">&#9881;</span>Actions</button></td>`;
 		//
+		// Allocation Info
+		newbody += `<td><button class="jobinfo" id="${elem.jobid}">Info</button></td>`;
 		// Allocation killer
 		newbody += `<td><button class="jobkill" id="${elem.jobid}">Kill</button></td>`;
 		newbody += "</tr>";
 	});
 	let table = document.getElementById("table-sessions");
 	table.innerHTML = newbody;
+
+	document.querySelectorAll("button.jobinfo").forEach(elem => {
+		elem.addEventListener('click', () => { 
+			info_allocation(elem.id); 
+		});
+	});
 
 	document.querySelectorAll("button.jobkill").forEach(elem => {
 		elem.addEventListener('click', () => { 

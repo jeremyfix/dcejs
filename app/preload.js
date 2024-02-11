@@ -10,7 +10,7 @@ contextBridge.exposeInMainWorld(
 			let validChannels = [
 				"connect", "disconnect",
 				"password","connection-status", "req-app-version",
-				"refresh-sessions", "show-new-session", "request-new-session","get-slurm-cmd", "kill", "startx", "show_app", "startvnc", "startnomachine", "startvscode", "start_app", "get_forwardport", "forwardport"
+				"refresh-sessions", "show-new-session", "request-new-session","get-slurm-cmd", "info", "kill", "startx", "show_app", "startvnc", "startnomachine", "startvscode", "start_app", "get_forwardport", "forwardport"
 			];
 			if (validChannels.includes(channel)) 
 				ipcRenderer.send(channel, data);
