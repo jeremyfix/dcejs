@@ -199,7 +199,7 @@ ipcMain.on("refresh-sessions", (event, args) => {
 
 function createAppWindow() {
 	appwindow = new BrowserWindow({
-		width: 350,
+		width: 250,
 		height: 350,
 		parent: mainWindow,
 		resizable: false,
@@ -229,7 +229,7 @@ function createAppWindow() {
 function createPortWindow() {
 	portwindow = new BrowserWindow({
 		width: 350,
-		height: 400,
+		height: 200,
 		parent: appwindow,
 		resizable: false,
 		alwaysOnTop: true,
@@ -623,6 +623,8 @@ ipcMain.on("forwardport", (event, arg) => {
 	sshhandler.port_forward(jobid, port)
 	.then((srcport) => {
 		logprogress(100, `Remote port ${port} mapped to localhost:${srcport}`);
+		sshhandler.register_port(jobid, port, srcport);
+
 	})
 	.catch(error => {
 		logfailure("Port forward failed", `Cannot bind remote port ${port}: ${error}`);
