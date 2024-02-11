@@ -394,10 +394,25 @@ function register_nodes_prop(jobid, prop, value) {
 			conn: null,
 			vnc_port: null,
 			nomachine_port: null,
-			vscode_port: null
+			vscode_port: null,
+			forwarded_ports: {}
 		};
 	ssh_nodes[jobid][prop] = value;
 	console.log(ssh_nodes);
+}
+
+function register_port(jobid, remote_port, src_port) {
+	if(!(ssh_nodes.hasOwnProperty(jobid))) 
+		ssh_nodes[jobid] = {
+			conn: null,
+			vnc_port: null,
+			nomachine_port: null,
+			vscode_port: null,
+			forwarded_ports: {}
+		};
+	ssh_nodes[jobid]['forwarded_ports'][src_port] = remote_port;	
+	const forwarded_ports=ssh_nodes[jobid]['forwarded_ports'];
+	console.log(forwarded_ports)
 }
 
 function get_job_props(jobid) {
@@ -647,5 +662,6 @@ module.exports = {
 	read_file,
 	port_forward,
 	register_nodes_prop,
+	register_port,
 	get_job_props
 };
