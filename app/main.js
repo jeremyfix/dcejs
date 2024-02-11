@@ -198,8 +198,8 @@ ipcMain.on("refresh-sessions", (event, args) => {
 
 function createAppWindow() {
 	appwindow = new BrowserWindow({
-		width: 450,
-		height: 300,
+		width: 350,
+		height: 350,
 		parent: mainWindow,
 		resizable: false,
 		alwaysOnTop: true,
