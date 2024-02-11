@@ -112,7 +112,7 @@ function createMainMenu() {
 app.on('ready', function() {
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
-		width: 650, height: 750,
+		width: 750, height: 750,
 		resizable: true,
 		icon: path.join(app.getAppPath(), 'dce-coul.png'),
 		webPreferences: {
