@@ -584,6 +584,7 @@ function find_free_port_rec(start_port, max_port, resolve, reject) {
 		.on('connect', function() {
 			console.log(`Port ${start_port} NOT free`);
 			s.end();
+			console.log(`Testing from ${start_port+1}`);
 			find_free_port_rec(start_port+1,max_port, resolve, reject); 
 		})
 		.on('error', err => {
