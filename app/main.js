@@ -16,6 +16,7 @@ let mainWindow;
 let passwindow = null;
 let newsessionwindow = null;
 let appwindow = null;
+let portwindow = null;
 let connection_status="disconnected";
 
 const logdirectory="~/.cscluster/"
@@ -221,10 +222,37 @@ function createAppWindow() {
 	);
 	appwindow.on('close', () => {
 		appwindow = null;
-		console.log('closed...');
+		console.log('closed app window...');
 	});
+}
 
-
+function createPortWindow() {
+	portwindow = new BrowserWindow({
+		width: 350,
+		height: 400,
+		parent: appwindow,
+		resizable: false,
+		alwaysOnTop: true,
+		closable: true,
+		modal: true,
+		show: false,
+		webPreferences: {
+			preload: path.join(__dirname, "preload.js")
+		}
+	});
+	// portwindow.webContents.openDevTools();
+	portwindow.setMenu(null);
+	portwindow.loadURL(
+		url.format({
+			pathname: path.join(__dirname, 'get_forwardport.html'),
+			protocol: 'file',
+			slashed: true
+		})
+	);
+	portwindow.on('close', () => {
+		portwindow = null;
+		console.log('closed port window...');
+	});
 }
 
 function createNewSessionWindow() {
@@ -573,6 +601,34 @@ ipcMain.on("startvscode", (event, arg) => {
 			logfailure("Running VSCode failed", `Error while running VSCode ${error}`);
 		});
 })
+
+ipcMain.on("get_forwardport", (event, arg) => {
+	createPortWindow();
+
+	portwindow.webContents.once('did-finish-load', () => {
+		portwindow.webContents.send("jobinfo", arg);
+	});
+	portwindow.show();
+
+});
+
+ipcMain.on("forwardport", (event, arg) => {
+	portwindow.close();
+	appwindow.close();
+
+	const jobid = arg.jobid;
+	const port = arg.port
+	logprogress(50, `Going to port forward remote ${port}`);
+
+	sshhandler.port_forward(jobid, port)
+	.then((srcport) => {
+		logprogress(100, `Remote port ${port} mapped to localhost:${srcport}`);
+	})
+	.catch(error => {
+		logfailure("Port forward failed", `Cannot bind remote port ${port}: ${error}`);
+	});
+
+});
 
 // Note : 
 // We need 1) to check nomachine is running  2) to bind nomachine

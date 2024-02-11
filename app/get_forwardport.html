@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Port forwarding</title>
+		<link rel="stylesheet" href="app.css">
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="header">
+				<label id="jobid" class="jobinfo">JOBID</label>
+				<label id="firstnode" class="jobinfo">FIRST NODE</label>
+				<label for="port">Enter the value of the remote port:</label>
+				<input type="number" id="port">
+				<input type="button" value="Ok" id="portForwardBtn"/>
+			</div>
+		</div>
+		<script src="./get_forwardport.js"></script>
+	</body>
+
+</html>
+
+

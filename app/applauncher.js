@@ -27,6 +27,13 @@ function startvscode() {
 	});
 }
 
+function forwardport() {
+	const jobid = parseInt(document.getElementById("jobid").innerHTML);
+	window.api.send("get_forwardport", {
+		jobid: jobid
+	});
+}
+
 window.addEventListener('DOMContentLoaded', () => {
 	let launchXBtn = document.getElementById('launchXBtn');
 	launchXBtn.addEventListener('click', launchx);
@@ -39,6 +46,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	let startVSCodeBtn = document.getElementById('startVSCodeBtn');
 	startVSCodeBtn.addEventListener('click', startvscode);
+
+	let portForwardBtn = document.getElementById('portForwardBtn');
+	portForwardBtn.addEventListener('click', forwardport);
 });
 
 window.api.receive('jobinfo' , (event ,arg) => {
