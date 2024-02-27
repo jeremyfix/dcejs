@@ -14,12 +14,13 @@ function startvnc() {
 	});
 }
 
-// function startnomachine() {
-// 	const jobid = parseInt(document.getElementById("jobid").innerHTML);
-// 	window.api.send("startnomachine", {
-// 		jobid: jobid
-// 	});
-// }
+function startnomachine() {
+	const jobid = parseInt(document.getElementById("jobid").innerHTML);
+	window.api.send("startnomachine", {
+		jobid: jobid
+	});
+}
+
 function startvscode() {
 	const jobid = parseInt(document.getElementById("jobid").innerHTML);
 	window.api.send("startvscode", {
@@ -41,8 +42,8 @@ window.addEventListener('DOMContentLoaded', () => {
 	let startVNCBtn = document.getElementById('startVNCBtn');
 	startVNCBtn.addEventListener('click', startvnc);
 
-	// let startVSCodeBtn = document.getElementById('startNoMachineBtn');
-	// startNoMachineBtn.addEventListener('click', startnomachine);
+	let startNoMachineBtn = document.getElementById('startNoMachineBtn');
+	startNoMachineBtn.addEventListener('click', startnomachine);
 
 	let startVSCodeBtn = document.getElementById('startVSCodeBtn');
 	startVSCodeBtn.addEventListener('click', startvscode);
