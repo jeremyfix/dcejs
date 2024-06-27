@@ -75,7 +75,17 @@ function createMainMenu() {
 								}
 						});
 					}
+				},
+				{
+					label: "Import a key",
+					click: async () => {
+						const win = BrowserWindow.getFocusedWindow();
+						mainWindow.webContents.send("get-gateway-forkey");	
+					}
 				}
+
+
+
 			]
 		}
 	];
@@ -810,6 +820,25 @@ ipcMain.on("disconnect", (event, args) => {
 			connection_status = "disconnected";
 			mainWindow.webContents.send("connection-status", connection_status);
 		});
+});
+
+ipcMain.on("gateway-forkey", (event, args) => {
+	console.log(args);
+
+	let gateway = args.gateway;
+	let login = args.login;
+	const win = BrowserWindow.getFocusedWindow();
+	const options = {
+		title: 'Select the private key file',
+		message: 'Locate and select the <b>private key</b> file to import.'
+	};
+	dialog.showOpenDialog(win, options)
+		.then(result => {
+			if(result.canceled == 0) {
+				sshkey = result.filePaths[0];
+				sshhandler.import_key(sshkey, gateway, login);
+			}
+	});
 });
 
 function createPassWindow() {
