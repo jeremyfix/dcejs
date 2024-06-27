@@ -58,6 +58,13 @@ function createMainMenu() {
 			label: "SSH Keys",
 			submenu: [
 				{
+					label: "Import a key",
+					click: async () => {
+						const win = BrowserWindow.getFocusedWindow();
+						mainWindow.webContents.send("get-gateway-forkey");	
+					}
+				},
+				{
 					label: "Delete the keys",
 					click: async () => {
 						const win = BrowserWindow.getFocusedWindow();
@@ -75,17 +82,7 @@ function createMainMenu() {
 								}
 						});
 					}
-				},
-				{
-					label: "Import a key",
-					click: async () => {
-						const win = BrowserWindow.getFocusedWindow();
-						mainWindow.webContents.send("get-gateway-forkey");	
-					}
 				}
-
-
-
 			]
 		}
 	];
