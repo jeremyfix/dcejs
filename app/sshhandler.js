@@ -3,7 +3,7 @@ const ssh2 = require('ssh2');
 const { spawn } = require('child_process');
 const { Socket, createServer, createConnection  } = require('net');
 const fs = require('fs');
-const { readFile } = require('fs/promises');
+const { copyFile, readFile } = require('fs/promises');
 const readline = require("readline");
 const path = require("path");
 
@@ -647,6 +647,18 @@ function port_forward(myjobid, dstport) {
 	});
 }
 
+function import_key(keypath, gateway, login) {
+	let private_key_path = path.join(default_keypath, default_keyprefix)+gateway+login;
+	copyFile(keypath, private_key_path)
+		.then(() => {
+			console.log("Key copied");
+		})
+		.catch((err) => {
+			console.log("Error in copying the key");
+			console.log(err);
+		});
+}
+
 module.exports = {
 	delete_keys,
 	ssh_frontal,
@@ -663,5 +675,6 @@ module.exports = {
 	port_forward,
 	register_nodes_prop,
 	register_port,
-	get_job_props
+	get_job_props,
+	import_key
 };
