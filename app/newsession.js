@@ -71,14 +71,14 @@ window.addEventListener('DOMContentLoaded', () => {
 	}
 
 	// Add change event detector to update the slurm command
-	document.getElementById('noresa_cpuspertask').addEventListener('change', event => {
-		if(document.getElementById('noresa_cpuspertask').value != "")
-			document.getElementById('noresa_ntasks').value = "";
-	});
-	document.getElementById('noresa_ntasks').addEventListener('change', event => {
-		if(document.getElementById('noresa_ntasks').value != "")
-			document.getElementById('noresa_cpuspertask').value = "";
-	});
+	// document.getElementById('noresa_cpuspertask').addEventListener('change', event => {
+	// 	if(document.getElementById('noresa_cpuspertask').value != "")
+	// 		document.getElementById('noresa_ntasks').value = "";
+	// });
+	// document.getElementById('noresa_ntasks').addEventListener('change', event => {
+	// 	if(document.getElementById('noresa_ntasks').value != "")
+	// 		document.getElementById('noresa_cpuspertask').value = "";
+	// });
 
 	let elements_id = ['walltime', 'partitions', 'noresa_exclusive', 'noresa_gres', 'noresa_cpuspertask', 'noresa_minnodes', 'noresa_qos', 'noresa_ntasks', 'noresa_constraint'];
 	elements_id.forEach(item => {
@@ -90,14 +90,14 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	});
 
-	document.getElementById('resa_cpuspertask').addEventListener('change', event => {
-		if(document.getElementById('resa_cpuspertask').value != "")
-			document.getElementById('resa_ntasks').value = "";
-	});
-	document.getElementById('resa_ntasks').addEventListener('change', event => {
-		if(document.getElementById('resa_ntasks').value != "")
-			document.getElementById('resa_cpuspertask').value = "";
-	});
+	// document.getElementById('resa_cpuspertask').addEventListener('change', event => {
+	// 	if(document.getElementById('resa_cpuspertask').value != "")
+	// 		document.getElementById('resa_ntasks').value = "";
+	// });
+	// document.getElementById('resa_ntasks').addEventListener('change', event => {
+	// 	if(document.getElementById('resa_ntasks').value != "")
+	// 		document.getElementById('resa_cpuspertask').value = "";
+	// });
 	elements_id = ['reservation', 'resa_walltime', 'resa_exclusive', 'resa_gres', 'resa_cpuspertask', 'resa_minnodes', 'resa_qos', 'resa_ntasks', 'resa_constraint'];
 	elements_id.forEach(item => {
 		document.getElementById(item).addEventListener('change', event => {
