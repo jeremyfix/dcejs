@@ -23,6 +23,12 @@ window.api.receive('logger', (event, arg) => {
 	document.getElementById("logger").innerHTML = arg;
 })
 
+window.api.receive('get-gateway-forkey', (event, arg) => {
+	let gateway = document.getElementById("cluster-gateway").value;
+	let login = document.getElementById("cluster-login").value;
+	window.api.send('gateway-forkey', {gateway: gateway, login:login});
+})
+
 window.api.receive('progress', (event, arg) => {
 	const progress = arg.progress;
 	const type = arg.type;
