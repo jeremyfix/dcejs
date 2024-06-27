@@ -80,7 +80,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			document.getElementById('noresa_cpuspertask').value = "";
 	});
 
-	let elements_id = ['walltime', 'partitions', 'noresa_exclusive', 'noresa_cpuspertask', 'noresa_minnodes', 'noresa_qos', 'noresa_ntasks', 'noresa_constraint'];
+	let elements_id = ['walltime', 'partitions', 'noresa_exclusive', 'noresa_gres', 'noresa_cpuspertask', 'noresa_minnodes', 'noresa_qos', 'noresa_ntasks', 'noresa_constraint'];
 	elements_id.forEach(item => {
 		document.getElementById(item).addEventListener('change', event => {
 			let options = get_options("noresa");
@@ -98,7 +98,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		if(document.getElementById('resa_ntasks').value != "")
 			document.getElementById('resa_cpuspertask').value = "";
 	});
-	elements_id = ['reservation', 'resa_walltime', 'resa_exclusive', 'resa_cpuspertask', 'resa_minnodes', 'resa_qos', 'resa_ntasks', 'resa_constraint'];
+	elements_id = ['reservation', 'resa_walltime', 'resa_exclusive', 'resa_gres', 'resa_cpuspertask', 'resa_minnodes', 'resa_qos', 'resa_ntasks', 'resa_constraint'];
 	elements_id.forEach(item => {
 		document.getElementById(item).addEventListener('change', event => {
 			let options = get_options("resa");
@@ -163,6 +163,8 @@ function get_options(mode) {
 		let advanced = document.getElementById("advanced_noresa").checked;
 		let exclusive = document.getElementById("noresa_exclusive");
 		let value_exclusive = true;
+		let gres = document.getElementById("noresa_gres");
+		let value_gres = null;
 		let cpuspertask = document.getElementById("noresa_cpuspertask");
 		let value_cpuspertask = null;
 		let minnodes = document.getElementById("noresa_minnodes");
@@ -185,6 +187,9 @@ function get_options(mode) {
 		}
 
 		if(advanced) {
+			if(gres.value != "") {
+				value_gres = gres.value;
+			}
 
 			if(cpuspertask.value != "") {
 				if(!isNumber(cpuspertask.value)) {
@@ -229,6 +234,7 @@ function get_options(mode) {
 			advanced: advanced,
 			exclusive: value_exclusive,
 			minnodes: value_minnodes,
+			gres: value_gres,
 			cpuspertask: value_cpuspertask,
 			qos: value_qos,
 			ntasks: value_ntasks,
@@ -261,6 +267,8 @@ function get_options(mode) {
 		let advanced = document.getElementById("advanced_resa").checked;
 		let exclusive = document.getElementById("resa_exclusive");
 		let value_exclusive = true;
+		let gres = document.getElementById("resa_gres");
+		let value_gres = null;
 		let cpuspertask = document.getElementById("resa_cpuspertask");
 		let value_cpuspertask = null;
 		let minnodes = document.getElementById("resa_minnodes");
@@ -278,6 +286,10 @@ function get_options(mode) {
 			cpuspertask.readOnly = false;
 
 		if(advanced) {
+
+			if(gres.value != "") {
+				value_gres = gres.value;
+			}
 
 			if(cpuspertask.value != "") {
 				if(!isNumber(cpuspertask.value)) {
@@ -320,6 +332,7 @@ function get_options(mode) {
 			advanced: advanced,
 			exclusive: value_exclusive,
 			minnodes: value_minnodes,
+			gres: value_gres,
 			cpuspertask: value_cpuspertask,
 			qos: value_qos,
 			ntasks: value_ntasks

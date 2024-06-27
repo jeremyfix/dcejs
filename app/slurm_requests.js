@@ -64,16 +64,19 @@ function get_slurm_cmd(options, epilogpath) {
 		slurm_cmd += `-N ${options.minnodes} `;
 	else
 		slurm_cmd += `-N 1 `;
+	if(options.gres != null)
+		slurm_cmd += `--gres=${options.gres} `;
 	if(options.qos != null)
-		slurm_cmd += `--qos ${options.qos} `;
+		slurm_cmd += `--qos=${options.qos} `;
 	if(options.constraint != null)
-		slurm_cmd += `--constraint ${options.constraint} `;
+		slurm_cmd += `--constraint=${options.constraint} `;
 	if(options.cpuspertask != null) 
-		slurm_cmd += `-c ${options.cpuspertask} `;
+		slurm_cmd += `--cpus-per-task=${options.cpuspertask} `;
 	if(options.exclusive)
 		slurm_cmd += '--exclusive ';
 	if(options.ntasks != null) 
-		slurm_cmd += `-n ${options.ntasks} `;
+		slurm_cmd += `--ntasks=${options.ntasks} `;
+
 
 	if(options.reservation != null) {
 		slurm_cmd +=`--reservation ${options.reservation} `;
