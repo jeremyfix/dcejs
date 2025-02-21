@@ -1,6 +1,6 @@
 {
 	"name": "dcejs",
-	"version": "1.13.0",
+	"version": "1.14.1",
 	"description": "An electron app to get connected to the DCE",
 	"main": "main.js",
 	"scripts": {
